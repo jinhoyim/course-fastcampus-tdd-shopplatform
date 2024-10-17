@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Api", "Orders.Api\Orders.Api.csproj", "{6B63E32B-7281-4F4C-B19F-AB1FB1BEF893}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Domain", "Orders.Domain\Orders.Domain.csproj", "{EBD16933-CE52-418B-B58C-0A36208D1027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Infrastructure", "Orders.Infrastructure\Orders.Infrastructure.csproj", "{A5CA46A9-173A-4D89-9827-4F3D6E06E643}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{6B63E32B-7281-4F4C-B19F-AB1FB1BEF893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B63E32B-7281-4F4C-B19F-AB1FB1BEF893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B63E32B-7281-4F4C-B19F-AB1FB1BEF893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD16933-CE52-418B-B58C-0A36208D1027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD16933-CE52-418B-B58C-0A36208D1027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD16933-CE52-418B-B58C-0A36208D1027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD16933-CE52-418B-B58C-0A36208D1027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5CA46A9-173A-4D89-9827-4F3D6E06E643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CA46A9-173A-4D89-9827-4F3D6E06E643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CA46A9-173A-4D89-9827-4F3D6E06E643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CA46A9-173A-4D89-9827-4F3D6E06E643}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
