@@ -21,7 +21,9 @@ public class OrdersDbContext : DbContext
         orderBuilder.HasIndex(x => x.Id).IsUnique();
         orderBuilder.HasIndex(x => x.UserId);
         orderBuilder.HasIndex(x => x.ShopId);
-        orderBuilder.Property(x => x.Status).HasConversion<string>();
+        orderBuilder.Property(x => x.Status)
+            .HasConversion<string>()
+            .HasColumnType("varchar(20)");
         orderBuilder.HasIndex(x => x.Status);
     }
 }
