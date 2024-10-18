@@ -1,29 +1,49 @@
 services:
-  postgres-17.0:
+  ordering-db:
     image: postgres:17.0-bookworm-koKR
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: postgres-17.0
+    container_name: ordering-db
     restart: always
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     environment:
       POSTGRES_USER: shopuser
       POSTGRES_PASSWORD: ${LOCAL_ORDERDB_PASSWORD}
-      POSTGRES_DB: shopdb
+      POSTGRES_DB: OrderingDB
       LANG: ko_KR.UTF-8
     volumes:
-      - postgres17.0-data:/var/lib/postgresql/data
+      - ordering-db-data:/var/lib/postgresql/data
       # - ./data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "5432:5432"
+  ordering-test-db:
+    image: postgres:17.0-bookworm-koKR
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ordering-test-db
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: ${LOCAL_ORDERDB_PASSWORD}
+      POSTGRES_DB: OrderingDB_Testing
+      LANG: ko_KR.UTF-8
+    volumes:
+      - ordering-test-db-data:/var/lib/postgresql/data
+      # - ./data:/var/lib/postgresql/data
+    ports:
+      - "15432:5432"
   adminer:
     image: adminer
     container_name: adminer
     restart: always
     ports:
-      - 40080:8080
+      - "40080:8080"
 
 volumes:
-  postgres17.0-data:
+  ordering-db-data:
+  ordering-test-db-data:
