@@ -32,29 +32,36 @@ public class OrderService(OrdersDbContext dbContext)
         return order;
     }
 
+    private async Task<Order> FindOrderById(Guid orderId)
+    {
+        var order = await DbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+        if (order == null)
+        {
+            throw new OrderNotFoundException($"Order with id {orderId} not found");
+        }
+        return order;
+    }
+
     public async Task<Order> StartOrder(Guid orderId)
     {
-        var order = await GetOrderById(orderId);
+        var order = await FindOrderById(orderId);
         order.StartOrder();
-        DbContext.Attach(order).State = EntityState.Modified;
         await DbContext.SaveChangesAsync();
         return order;
     }
 
     public async Task<Order> PaymentCompleted(Guid orderId)
     {
-        var order = await GetOrderById(orderId);
+        var order = await FindOrderById(orderId);
         order.PaymentCompleted();
-        DbContext.Attach(order).State = EntityState.Modified;
         await DbContext.SaveChangesAsync();
         return order;
     }
 
     public async Task<Order> ItemShipped(Guid orderId)
     {
-        var order = await GetOrderById(orderId);
+        var order = await FindOrderById(orderId);
         order.ItemShipped();
-        DbContext.Attach(order).State = EntityState.Modified;
         await DbContext.SaveChangesAsync();
         return order;
     }
