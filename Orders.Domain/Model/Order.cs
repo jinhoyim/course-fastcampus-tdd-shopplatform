@@ -44,14 +44,14 @@ public class Order
         StartedAtUtc = DateTime.UtcNow;
     }
 
-    public void PaymentCompleted()
+    public void PaymentCompleted(DateTime eventTimeUtc)
     {
         if (Status != OrderStatus.AwaitingPayment)
         {
             throw new OrderProcessException("Order is not awaiting payment");
         }
         Status = OrderStatus.AwaitingShipment;
-        PaidAtUtc = DateTime.UtcNow;
+        PaidAtUtc = eventTimeUtc;
     }
 
     public void ItemShipped()
@@ -61,6 +61,5 @@ public class Order
             throw new OrderProcessException("Order is not awaiting shipment");
         }
         Status = OrderStatus.Completed;
-        ShippedAtUtc = DateTime.UtcNow;
     }
 }

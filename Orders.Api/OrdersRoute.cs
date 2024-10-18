@@ -1,5 +1,8 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Orders.Api.Commands;
+using Orders.Api.Events;
 using Orders.Domain;
 using Orders.Domain.Exception;
 
@@ -34,12 +37,12 @@ public static class OrdersRoute
     }
     
     private static async Task<Results<Ok<Order>, BadRequest<string>>> ItemShippedAsync(
-        Guid orderId,
+        [FromBody] ItemShipped listenedEvent,
         OrderService orderService)
     {
         try
         {
-            var order = await orderService.ItemShipped(orderId);
+            var order = await orderService.ItemShipped(listenedEvent.OrderID);
             return TypedResults.Ok(order);
         }
         catch (Exception ex)
@@ -53,12 +56,12 @@ public static class OrdersRoute
     }
     
     private static async Task<Results<Ok<Order>, BadRequest<string>>> PaymentCompletedAsync(
-        Guid orderId,
+        [FromBody] BankTransferPaymentCompleted listenedEvent,
         OrderService orderService)
     {
         try
         {
-            var order = await orderService.PaymentCompleted(orderId);
+            var order = await orderService.PaymentCompleted(listenedEvent.OrderId, listenedEvent.EventTimeUtc);
             return TypedResults.Ok(order);
         }
         catch (Exception ex)
@@ -73,6 +76,7 @@ public static class OrdersRoute
 
     private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrderAsync(
         Guid orderId,
+        [FromBody] StartOrder command,
         OrderService orderService)
     {
         try
@@ -106,19 +110,19 @@ public static class OrdersRoute
     }
 
     private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrderAsync(
-        CreateOrderRequest request,
+        [FromBody] PlaceOrder command,
         OrderService orderService)
     {
-        if (request.UserId == Guid.Empty ||
-            request.ShopId == Guid.Empty ||
-            request.ItemId == Guid.Empty)
+        if (command.UserId == Guid.Empty ||
+            command.ShopId == Guid.Empty ||
+            command.ItemId == Guid.Empty)
         {
             return TypedResults.BadRequest("bad request");
         }
 
         try
         {
-            var order = await orderService.PlaceOrder(request.UserId, request.ShopId, request.ItemId, request.Price);
+            var order = await orderService.PlaceOrder(command.UserId, command.ShopId, command.ItemId, command.Price);
             return TypedResults.Created($"orders/{order.Id}", order);
         }
         catch (OrderNotFoundException ex)
@@ -135,10 +139,3 @@ public static class OrdersRoute
         return TypedResults.Ok(orders.AsEnumerable());
     }
 }
-
-public record CreateOrderRequest(
-    Guid UserId,
-    Guid ShopId,
-    Guid ItemId,
-    decimal Price
-    );
