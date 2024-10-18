@@ -14,9 +14,13 @@ public class OrderService(OrdersDbContext dbContext)
         return await DbContext.Orders.AsNoTracking().ToListAsync();
     }
 
-    public async Task<Order> PlaceOrder(Guid userId, Guid shopId, Guid itemId)
+    public async Task<Order> PlaceOrder(Guid userId, Guid shopId, Guid itemId, decimal price)
     {
-        var order = Order.Create(userId, shopId, itemId, 10000);
+        if (price <= 0)
+        {
+            throw new InvalidOrderException("Price must be greater than zero.");
+        }
+        var order = Order.Create(userId, shopId, itemId, price);
         await DbContext.Orders.AddAsync(order);
         await DbContext.SaveChangesAsync();
         return order;

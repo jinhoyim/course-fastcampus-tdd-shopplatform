@@ -115,9 +115,16 @@ public static class OrdersRoute
         {
             return TypedResults.BadRequest("bad request");
         }
-        
-        var order = await orderService.PlaceOrder(request.UserId, request.ShopId, request.ItemId);
-        return TypedResults.Created($"orders/{order.Id}", order);
+
+        try
+        {
+            var order = await orderService.PlaceOrder(request.UserId, request.ShopId, request.ItemId, request.Price);
+            return TypedResults.Created($"orders/{order.Id}", order);
+        }
+        catch (OrderNotFoundException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
     }
 
     private static async Task<Ok<IEnumerable<Order>>> GetOrdersAsync(
@@ -132,5 +139,6 @@ public static class OrdersRoute
 public record CreateOrderRequest(
     Guid UserId,
     Guid ShopId,
-    Guid ItemId
+    Guid ItemId,
+    decimal Price
     );
