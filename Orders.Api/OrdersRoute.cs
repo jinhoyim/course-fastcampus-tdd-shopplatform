@@ -36,13 +36,59 @@ public static class OrdersRoute
         return orderRouteBuilder;
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> ItemShippedAsync(
-        [FromBody] ItemShipped listenedEvent,
+    private static async Task<Ok<IEnumerable<Order>>> GetOrdersAsync(
+        OrderService orderService
+    )
+    {
+        var orders = await orderService.GetOrders();
+        return TypedResults.Ok(orders.AsEnumerable());
+    }
+    
+    private static async Task<Results<Ok<Order>, NotFound>> GetOrderAsync(
+        Guid orderId,
         OrderService orderService)
     {
         try
         {
-            var order = await orderService.ItemShipped(listenedEvent.OrderID);
+            var order = await orderService.GetOrderById(orderId);
+            return TypedResults.Ok(order);
+        }
+        catch (OrderNotFoundException ex)
+        {
+            return TypedResults.NotFound();
+        }
+    }
+    
+    private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrderAsync(
+        [FromBody] PlaceOrder command,
+        OrderService orderService)
+    {
+        if (command.UserId == Guid.Empty ||
+            command.ShopId == Guid.Empty ||
+            command.ItemId == Guid.Empty)
+        {
+            return TypedResults.BadRequest("bad request");
+        }
+
+        try
+        {
+            var order = await orderService.PlaceOrder(command.UserId, command.ShopId, command.ItemId, command.Price);
+            return TypedResults.Created($"orders/{order.Id}", order);
+        }
+        catch (OrderNotFoundException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
+    }
+    
+    private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrderAsync(
+        Guid orderId,
+        [FromBody] StartOrder command,
+        OrderService orderService)
+    {
+        try
+        {
+            var order = await orderService.StartOrder(orderId);
             return TypedResults.Ok(order);
         }
         catch (Exception ex)
@@ -73,15 +119,14 @@ public static class OrdersRoute
             throw;
         }
     }
-
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrderAsync(
-        Guid orderId,
-        [FromBody] StartOrder command,
+    
+    private static async Task<Results<Ok<Order>, BadRequest<string>>> ItemShippedAsync(
+        [FromBody] ItemShipped listenedEvent,
         OrderService orderService)
     {
         try
         {
-            var order = await orderService.StartOrder(orderId);
+            var order = await orderService.ItemShipped(listenedEvent.OrderID);
             return TypedResults.Ok(order);
         }
         catch (Exception ex)
@@ -92,50 +137,5 @@ public static class OrdersRoute
             }
             throw;
         }
-    }
-
-    private static async Task<Results<Ok<Order>, NotFound>> GetOrderAsync(
-        Guid orderId,
-        OrderService orderService)
-    {
-        try
-        {
-            var order = await orderService.GetOrderById(orderId);
-            return TypedResults.Ok(order);
-        }
-        catch (OrderNotFoundException ex)
-        {
-            return TypedResults.NotFound();
-        }
-    }
-
-    private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrderAsync(
-        [FromBody] PlaceOrder command,
-        OrderService orderService)
-    {
-        if (command.UserId == Guid.Empty ||
-            command.ShopId == Guid.Empty ||
-            command.ItemId == Guid.Empty)
-        {
-            return TypedResults.BadRequest("bad request");
-        }
-
-        try
-        {
-            var order = await orderService.PlaceOrder(command.UserId, command.ShopId, command.ItemId, command.Price);
-            return TypedResults.Created($"orders/{order.Id}", order);
-        }
-        catch (OrderNotFoundException ex)
-        {
-            return TypedResults.BadRequest(ex.Message);
-        }
-    }
-
-    private static async Task<Ok<IEnumerable<Order>>> GetOrdersAsync(
-        OrderService orderService
-    )
-    {
-        var orders = await orderService.GetOrders();
-        return TypedResults.Ok(orders.AsEnumerable());
     }
 }
