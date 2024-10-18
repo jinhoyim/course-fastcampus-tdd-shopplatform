@@ -76,13 +76,13 @@ public static class OrdersRoute
             var order = await orderService.PlaceOrder(command.UserId, command.ShopId, command.ItemId, command.Price);
             return TypedResults.Created($"orders/{order.Id}", order);
         }
-        catch (OrderNotFoundException ex)
+        catch (InvalidOrderException ex)
         {
             return TypedResults.BadRequest(ex.Message);
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrder(
+    private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> StartOrder(
         Guid orderId,
         [FromBody] StartOrder command,
         OrderService orderService)
@@ -92,17 +92,17 @@ public static class OrdersRoute
             var order = await orderService.StartOrder(orderId);
             return TypedResults.Ok(order);
         }
-        catch (Exception ex)
+        catch (OrderNotFoundException ex)
         {
-            if (ex is OrderNotFoundException or OrderProcessException)
-            {
-                return TypedResults.BadRequest(ex.Message);
-            }
-            throw;
+            return TypedResults.NotFound(ex.Message);
+        }
+        catch (OrderProcessException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> HandleBankTransferPaymentCompleted(
+    private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> HandleBankTransferPaymentCompleted(
         [FromBody] BankTransferPaymentCompleted listenedEvent,
         OrderService orderService)
     {
@@ -111,17 +111,17 @@ public static class OrdersRoute
             var order = await orderService.PaymentCompleted(listenedEvent.OrderId, listenedEvent.EventTimeUtc);
             return TypedResults.Ok(order);
         }
-        catch (Exception ex)
+        catch (OrderNotFoundException ex)
         {
-            if (ex is OrderNotFoundException or OrderProcessException)
-            {
-                return TypedResults.BadRequest(ex.Message);
-            }
-            throw;
+            return TypedResults.NotFound(ex.Message);
+        }
+        catch (OrderProcessException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> HandleItemShipped(
+    private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> HandleItemShipped(
         [FromBody] ItemShipped listenedEvent,
         OrderService orderService)
     {
@@ -130,13 +130,13 @@ public static class OrdersRoute
             var order = await orderService.ItemShipped(listenedEvent.OrderID);
             return TypedResults.Ok(order);
         }
-        catch (Exception ex)
+        catch (OrderNotFoundException ex)
         {
-            if (ex is OrderNotFoundException or OrderProcessException)
-            {
-                return TypedResults.BadRequest(ex.Message);
-            }
-            throw;
+            return TypedResults.NotFound(ex.Message);
+        }
+        catch (OrderProcessException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
         }
     }
 }
