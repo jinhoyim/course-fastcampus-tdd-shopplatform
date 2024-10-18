@@ -21,12 +21,13 @@ public static class OrdersRoute
         var orderRouteBuilder = app.MapGroup("api/v{version:apiVersion}/orders")
             .WithApiVersionSet(orderApiVersionSet);
 
-        orderRouteBuilder.MapGet("/", GetOrdersAsync).WithName("GetOrders");
-        orderRouteBuilder.MapGet("{orderId:Guid}", GetOrderAsync).WithName("GetOrder");
-        orderRouteBuilder.MapPost("/", PlaceOrderAsync).WithName("CreateOrder");
-        orderRouteBuilder.MapPost("{orderId:Guid}/start-order", StartOrderAsync).WithName("StartOrder");
-        orderRouteBuilder.MapPost("handle/bank-transfer-payment-completed", PaymentCompletedAsync).WithName("PaymentComplete");
-        orderRouteBuilder.MapPost("handle/item-shipped", ItemShippedAsync).WithName("ItemShipped");
+        orderRouteBuilder.MapGet("/", GetOrders).WithName("GetOrders");
+        orderRouteBuilder.MapGet("{orderId:Guid}", FindOrder).WithName("FindOrder");
+        orderRouteBuilder.MapPost("/", PlaceOrder).WithName("PlaceOrder");
+        orderRouteBuilder.MapPost("{orderId:Guid}/start-order", StartOrder).WithName("StartOrder");
+        orderRouteBuilder.MapPost("handle/bank-transfer-payment-completed", HandleBankTransferPaymentCompleted)
+            .WithName("HandleBankTransferPaymentCompleted");
+        orderRouteBuilder.MapPost("handle/item-shipped", HandleItemShipped).WithName("HandleItemShipped");
         
         orderRouteBuilder
             .WithName("Orders API")
@@ -36,7 +37,7 @@ public static class OrdersRoute
         return orderRouteBuilder;
     }
     
-    private static async Task<Ok<IEnumerable<Order>>> GetOrdersAsync(
+    private static async Task<Ok<IEnumerable<Order>>> GetOrders(
         OrderService orderService
     )
     {
@@ -44,7 +45,7 @@ public static class OrdersRoute
         return TypedResults.Ok(orders.AsEnumerable());
     }
     
-    private static async Task<Results<Ok<Order>, NotFound>> GetOrderAsync(
+    private static async Task<Results<Ok<Order>, NotFound>> FindOrder(
         Guid orderId,
         OrderService orderService)
     {
@@ -59,7 +60,7 @@ public static class OrdersRoute
         }
     }
     
-    private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrderAsync(
+    private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrder(
         [FromBody] PlaceOrder command,
         OrderService orderService)
     {
@@ -81,7 +82,7 @@ public static class OrdersRoute
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrderAsync(
+    private static async Task<Results<Ok<Order>, BadRequest<string>>> StartOrder(
         Guid orderId,
         [FromBody] StartOrder command,
         OrderService orderService)
@@ -101,7 +102,7 @@ public static class OrdersRoute
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> PaymentCompletedAsync(
+    private static async Task<Results<Ok<Order>, BadRequest<string>>> HandleBankTransferPaymentCompleted(
         [FromBody] BankTransferPaymentCompleted listenedEvent,
         OrderService orderService)
     {
@@ -120,7 +121,7 @@ public static class OrdersRoute
         }
     }
     
-    private static async Task<Results<Ok<Order>, BadRequest<string>>> ItemShippedAsync(
+    private static async Task<Results<Ok<Order>, BadRequest<string>>> HandleItemShipped(
         [FromBody] ItemShipped listenedEvent,
         OrderService orderService)
     {
