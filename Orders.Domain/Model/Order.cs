@@ -14,10 +14,19 @@ public class Order
     public Guid ShopId { get; init; }
     public Guid ItemId { get; init; }
     public decimal Price { get; init; }
+
+    [JsonInclude]
     public OrderStatus Status { get; private set; }
     public DateTime PlacedAtUtc { get; init; }
+
+    [JsonInclude]
     public DateTime? StartedAtUtc { get; private set; }
+
+    [JsonInclude]
     public DateTime? PaidAtUtc { get; private set; }
+
+    // [JsonIgnore]
+    [JsonInclude]
     public DateTime? ShippedAtUtc { get; private set; }
 
     public static Order Create(Guid userId, Guid shopId, Guid itemId, decimal price)
@@ -54,12 +63,13 @@ public class Order
         PaidAtUtc = eventTimeUtc;
     }
 
-    public void ItemShipped()
+    public void ItemShipped(DateTime eventTimeUtc)
     {
         if (Status != OrderStatus.AwaitingShipment)
         {
             throw new OrderProcessException("Order is not awaiting shipment");
         }
         Status = OrderStatus.Completed;
+        ShippedAtUtc = eventTimeUtc;
     }
 }

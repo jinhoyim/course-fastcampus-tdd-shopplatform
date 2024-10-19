@@ -62,10 +62,10 @@ public class OrderService(OrdersDbContext dbContext)
         return order;
     }
 
-    public async Task<Order> ItemShipped(Guid orderId)
+    public async Task<Order> ItemShipped(Guid orderId, DateTime eventTimeUtc)
     {
         var order = await FindOrderById(orderId);
-        order.ItemShipped();
+        order.ItemShipped(eventTimeUtc);
         await DbContext.SaveChangesAsync();
         return order;
     }
