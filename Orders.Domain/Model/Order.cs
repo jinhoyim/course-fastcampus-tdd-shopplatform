@@ -11,12 +11,16 @@ public class Order
     public long Sequence { get; init; }
 
     public Guid UserId { get; init; }
+    
     public Guid ShopId { get; init; }
+    
     public Guid ItemId { get; init; }
+    
     public decimal Price { get; init; }
 
     [JsonInclude]
     public OrderStatus Status { get; private set; }
+    
     public DateTime PlacedAtUtc { get; init; }
 
     [JsonInclude]
