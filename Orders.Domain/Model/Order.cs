@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Orders.Domain.Exception;
 
-namespace Orders.Domain;
+namespace Orders.Domain.Model;
 
 public class Order
 {

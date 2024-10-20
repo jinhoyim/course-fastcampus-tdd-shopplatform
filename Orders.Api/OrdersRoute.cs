@@ -5,6 +5,7 @@ using Orders.Api.Commands;
 using Orders.Api.Events;
 using Orders.Domain;
 using Orders.Domain.Exception;
+using Orders.Domain.Model;
 
 namespace Orders.Api;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Orders.Domain;
+using Orders.Domain.Model;
 
 namespace Orders.Infrastructure;
 

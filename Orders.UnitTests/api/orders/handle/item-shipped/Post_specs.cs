@@ -5,6 +5,7 @@ using Orders.Api;
 using Orders.Api.Commands;
 using Orders.Api.Events;
 using Orders.Domain;
+using Orders.Domain.Model;
 
 namespace Orders.UnitTests.api.orders.handle.item_shipped;
 

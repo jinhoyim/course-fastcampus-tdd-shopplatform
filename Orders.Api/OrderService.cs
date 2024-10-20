@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Orders.Domain;
 using Orders.Domain.Exception;
+using Orders.Domain.Model;
 using Orders.Infrastructure;
 
 namespace Orders.Api;
