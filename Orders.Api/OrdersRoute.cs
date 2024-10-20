@@ -39,10 +39,11 @@ public static class OrdersRoute
     }
     
     private static async Task<Ok<IEnumerable<Order>>> GetOrders(
+        [FromQuery(Name = "user-id")] Guid? userId,
         OrderService orderService
     )
     {
-        var orders = await orderService.GetOrders();
+        var orders = await orderService.GetOrders(userId);
         return TypedResults.Ok(orders.AsEnumerable());
     }
     
