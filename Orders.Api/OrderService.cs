@@ -10,18 +10,12 @@ public class OrderService(OrdersDbContext dbContext)
 {
     public OrdersDbContext DbContext { get; init; } = dbContext;
 
-    public async Task<List<Order>> GetOrders(Guid? userId)
+    public async Task<List<Order>> GetOrders(Guid? userId, Guid? shopId)
     {
-        if (userId == null || userId.Equals(Guid.Empty))
-        {
-            return await DbContext.Orders.AsNoTracking().ToListAsync();
-        }
-        else
-        {
-            return await DbContext.Orders.AsNoTracking()
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
-        }
+        return await DbContext.Orders.AsNoTracking()
+            .FilterByUser(userId)
+            .FilterByShop(shopId)
+            .ToListAsync();
     }
 
     public async Task<Order> PlaceOrder(Guid userId, Guid shopId, Guid itemId, decimal price)
