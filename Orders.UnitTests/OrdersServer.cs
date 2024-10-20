@@ -13,6 +13,7 @@ namespace Orders.UnitTests;
 
 public class OrdersServer : TestServer
 {
+    private static readonly object s_dbMigrationLock = new();
     public const string ConnectionString = "Host=localhost;port=15432;Database=OrderingDB_Testing;Username=testuser;Password=mysecret-password#";
     
     public OrdersServer(
@@ -28,9 +29,13 @@ public class OrdersServer : TestServer
         // TestServer.Server 프로퍼티는 IServer 를 반환한다.
         // Factory에 IServer에 싱글턴으로 OrdersServer를 등록해뒀다.
         OrdersServer server = (OrdersServer)new Factory().Server;
-        using IServiceScope scope = server.Services.CreateScope();
-        OrdersDbContext dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-        dbContext.Database.Migrate();
+        // 여러 테스트가 동시에 실행될 때 테스트 서버의 디비 마이그레이션이 동시에 실행되지 않도록 한다.
+        lock (s_dbMigrationLock)
+        {
+            using IServiceScope scope = server.Services.CreateScope();
+            OrdersDbContext dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
+            dbContext.Database.Migrate();
+        }
         return server;
     }
     
