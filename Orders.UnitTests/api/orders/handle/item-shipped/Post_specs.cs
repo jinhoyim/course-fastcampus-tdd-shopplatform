@@ -30,7 +30,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_not_started()
+    public async Task Sut_fails_if_order_not_started()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -41,7 +41,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_payment_not_completed()
+    public async Task Sut_fails_if_payment_not_completed()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -53,7 +53,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_already_completed()
+    public async Task Sut_fails_if_order_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();

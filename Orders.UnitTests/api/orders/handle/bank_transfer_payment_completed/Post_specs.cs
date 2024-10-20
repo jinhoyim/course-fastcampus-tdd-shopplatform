@@ -6,7 +6,7 @@ namespace Orders.UnitTests.api.orders.handle.bank_transfer_payment_completed;
 public class Post_specs
 {
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_not_started()
+    public async Task Sut_fails_if_order_is_pending()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -17,7 +17,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_payment_already_completed()
+    public async Task Sut_fails_if_payment_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
         HttpClient client = server.CreateClient();
@@ -31,7 +31,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_completed()
+    public async Task Sut_fails_if_order_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
         HttpClient client = server.CreateClient();

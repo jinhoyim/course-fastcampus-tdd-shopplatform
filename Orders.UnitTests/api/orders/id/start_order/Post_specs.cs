@@ -6,7 +6,7 @@ namespace Orders.UnitTests.api.orders.id.start_order;
 public class Post_specs
 {
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_already_started()
+    public async Task Sut_fails_if_order_already_started()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -18,7 +18,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_payment_completed()
+    public async Task Sut_fails_if_payment_completed()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -31,7 +31,7 @@ public class Post_specs
     }
 
     [Fact]
-    public async Task Sut_returns_BadRequest_if_order_completed()
+    public async Task Sut_fails_if_order_completed()
     {
         OrdersServer server = OrdersServer.Create();
         Guid orderId = await server.PlaceOrder();
@@ -43,4 +43,5 @@ public class Post_specs
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
+    
 }
