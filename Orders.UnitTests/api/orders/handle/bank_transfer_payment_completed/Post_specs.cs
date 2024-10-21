@@ -20,7 +20,6 @@ public class Post_specs
     public async Task Sut_fails_if_payment_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        HttpClient client = server.CreateClient();
         Guid orderId = await server.PlaceOrder();
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
@@ -34,7 +33,6 @@ public class Post_specs
     public async Task Sut_fails_if_order_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        HttpClient client = server.CreateClient();
         Guid orderId = await server.PlaceOrder();
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
