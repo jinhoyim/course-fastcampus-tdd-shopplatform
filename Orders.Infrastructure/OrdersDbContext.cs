@@ -26,5 +26,6 @@ public class OrdersDbContext : DbContext
             .HasConversion<string>()
             .HasColumnType("varchar(20)");
         orderBuilder.HasIndex(x => x.Status);
+        orderBuilder.HasIndex(x => x.PaymentTransactionId);
     }
 }

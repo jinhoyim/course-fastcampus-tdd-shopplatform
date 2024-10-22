@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Api.Commands;
 using Orders.Api.Events;
+using Orders.Api.Messaging;
 using Orders.Domain;
 using Orders.Domain.Exception;
 using Orders.Domain.Model;
@@ -28,6 +29,7 @@ public static class OrdersRoute
         orderRouteBuilder.MapPost("{orderId:Guid}/start-order", StartOrder).WithName("StartOrder");
         orderRouteBuilder.MapPost("handle/bank-transfer-payment-completed", HandleBankTransferPaymentCompleted)
             .WithName("HandleBankTransferPaymentCompleted");
+        orderRouteBuilder.MapPost("accept/payment-approved", AcceptPaymentApproved).WithName("AcceptPaymentApproved");
         orderRouteBuilder.MapPost("handle/item-shipped", HandleItemShipped).WithName("HandleItemShipped");
         
         orderRouteBuilder
@@ -92,7 +94,7 @@ public static class OrdersRoute
     {
         try
         {
-            var order = await orderService.StartOrder(orderId);
+            var order = await orderService.StartOrder(orderId, command.PaymentTransactionId);
             return TypedResults.Ok(order);
         }
         catch (OrderNotFoundException ex)
@@ -122,6 +124,18 @@ public static class OrdersRoute
         {
             return TypedResults.BadRequest(ex.Message);
         }
+    }
+
+    private static async Task<Accepted> AcceptPaymentApproved(
+        [FromBody] ExternalPaymentApproved listenedEvent,
+        [FromServices] IBus<PaymentApproved> bus)
+    {
+        PaymentApproved message = new PaymentApproved(
+            listenedEvent.tid,
+            listenedEvent.approved_at);
+        
+        await bus.Send(message);
+        return TypedResults.Accepted("");
     }
     
     private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> HandleItemShipped(

@@ -52,7 +52,8 @@ public class OrdersServer : TestServer
             {
                 config.AddInMemoryCollection(new Dictionary<string, string>
                 {
-                    {"ConnectionStrings:OrdersDbConnection", ConnectionString}
+                    {"ConnectionStrings:OrdersDbConnection", ConnectionString},
+                    {"Storage:Queues:PaymentApproved", "payment-approved-unittests"}
                 }!);
             });
             return base.CreateHost(builder);

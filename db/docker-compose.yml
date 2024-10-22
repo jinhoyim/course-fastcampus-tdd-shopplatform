@@ -43,7 +43,18 @@ services:
     restart: always
     ports:
       - "40080:8080"
-
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.32.0-arm64
+    container_name: "ordering-azurite"
+    restart: always
+    ports:
+      - "10001:10001"
+#   컨테이너가 아닌 경우 0.0.0.0 원격 호스트는 주의해서 사용한다.
+    command: azurite-queue --queueHost 0.0.0.0 --queuePort 10001
+    volumes:
+      - ordering-azurite-data:/data
+      
 volumes:
   ordering-db-data:
   ordering-test-db-data:
+  ordering-azurite-data:

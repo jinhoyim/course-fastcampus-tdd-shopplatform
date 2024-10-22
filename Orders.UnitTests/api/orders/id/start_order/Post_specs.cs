@@ -45,5 +45,17 @@ public class Post_specs
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
-    
+
+    [Fact]
+    public async Task Sut_correctly_sets_payment_transaction_id()
+    {
+        OrdersServer server = OrdersServer.Create();
+        Guid orderId = await server.PlaceOrder();
+        string paymentTransactionId = Guid.NewGuid().ToString();
+
+        await server.StartOrder(orderId, paymentTransactionId);
+
+        var actual = await server.FindOrder(orderId);
+        actual!.PaymentTransactionId.Should().Be(paymentTransactionId);
+    }
 }

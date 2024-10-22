@@ -21,6 +21,9 @@ public class Order
     [JsonInclude]
     public OrderStatus Status { get; private set; }
     
+    [JsonInclude]
+    public string? PaymentTransactionId { get; private set; }
+    
     public DateTime PlacedAtUtc { get; init; }
 
     [JsonInclude]
@@ -47,7 +50,7 @@ public class Order
         };
     }
 
-    public void StartOrder()
+    public void StartOrder(string? paymentTransactionId)
     {
         if (Status != OrderStatus.Pending)
         {
@@ -55,6 +58,7 @@ public class Order
         }
         Status = OrderStatus.AwaitingPayment;
         StartedAtUtc = DateTime.UtcNow;
+        PaymentTransactionId = paymentTransactionId;
     }
 
     public void PaymentCompleted(DateTime eventTimeUtc)

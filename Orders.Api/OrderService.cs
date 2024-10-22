@@ -49,10 +49,10 @@ public class OrderService(OrdersDbContext dbContext)
         return order;
     }
 
-    public async Task<Order> StartOrder(Guid orderId)
+    public async Task<Order> StartOrder(Guid orderId, string? paymentTransactionId)
     {
         var order = await FindOrderById(orderId);
-        order.StartOrder();
+        order.StartOrder(paymentTransactionId);
         await DbContext.SaveChangesAsync();
         return order;
     }

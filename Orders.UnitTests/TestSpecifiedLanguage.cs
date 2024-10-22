@@ -21,11 +21,14 @@ public static class TestSpecifiedLanguage
         return (await response.Content.ReadFromJsonAsync<Order>())!.Id;
     }
 
-    public static async Task<HttpResponseMessage> StartOrder(this OrdersServer server, Guid orderId)
+    public static async Task<HttpResponseMessage> StartOrder(
+        this OrdersServer server,
+        Guid orderId,
+        string? paymentTransactionId = null)
     {
         HttpClient client = server.CreateClient();
         string uri = $"api/v1/orders/{orderId}/start-order";
-        StartOrder body = new();
+        StartOrder body = new(paymentTransactionId);
         return await client.PostAsJsonAsync(uri, body);
     }
 
@@ -43,5 +46,12 @@ public static class TestSpecifiedLanguage
         string uri = "api/v1/orders/handle/item-shipped";
         ItemShipped body = new(orderId, EventTimeUtc: DateTime.UtcNow);
         return await client.PostAsJsonAsync(uri, body);
+    }
+
+    public static async Task<Order?> FindOrder(this OrdersServer server, Guid orderId)
+    {
+        HttpClient client = server.CreateClient();
+        string uri = $"api/v1/orders/{orderId}";
+        return await client.GetFromJsonAsync<Order>(uri);
     }
 }

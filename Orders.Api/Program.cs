@@ -1,6 +1,9 @@
-using Microsoft.OpenApi.Models;
 using Asp.Versioning;
+using Azure.Storage.Queues;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Orders.Api.Events;
+using Orders.Api.Messaging;
 using Orders.Infrastructure;
 
 namespace Orders.Api;
@@ -18,7 +21,10 @@ public class Program
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("OrdersDbConnection"));
         });
-
+        builder.Services.AddSingleton(CreateStorageQueueBus);
+        builder.Services.AddSingleton<IBus<PaymentApproved>>(GetStorageQueueBus);
+        builder.Services.AddSingleton<IAsyncObservable<PaymentApproved>>(GetStorageQueueBus);
+            
         builder.Services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -63,6 +69,20 @@ public class Program
 
         app.MapBuild();
 
+        PaymentApprovedEventHandler.Listen(app.Services);
+        
         app.Run();
     }
+
+    private static StorageQueueBus CreateStorageQueueBus(IServiceProvider provider)
+    {
+        IConfiguration config = provider.GetRequiredService<IConfiguration>();
+        QueueClient client = new(
+            config["Storage:ConnectionString"],
+            config["Storage:Queues:PaymentApproved"]);
+        return new StorageQueueBus(client);
+    }
+    
+    private static StorageQueueBus GetStorageQueueBus(IServiceProvider provider)
+        => provider.GetRequiredService<StorageQueueBus>();
 }
