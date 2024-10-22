@@ -144,7 +144,7 @@ public static class OrdersRoute
     {
         try
         {
-            var order = await orderService.ItemShipped(listenedEvent.OrderID, listenedEvent.EventTimeUtc);
+            var order = await orderService.ItemShipped(listenedEvent.OrderId, listenedEvent.EventTimeUtc);
             return TypedResults.Ok(order);
         }
         catch (OrderNotFoundException ex)
