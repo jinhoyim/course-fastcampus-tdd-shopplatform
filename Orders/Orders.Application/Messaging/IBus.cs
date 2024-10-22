@@ -1,4 +1,4 @@
-namespace Orders.Api.Messaging;
+namespace Orders.Application.Messaging;
 
 public interface IBus<T>
 {

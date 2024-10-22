@@ -3,8 +3,10 @@ using Azure.Storage.Queues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Orders.Api.Events;
-using Orders.Api.Messaging;
+using Orders.Application.Events;
+using Orders.Application.Messaging;
 using Orders.Infrastructure;
+using Orders.Infrastructure.Messaging;
 
 namespace Orders.Api;
 

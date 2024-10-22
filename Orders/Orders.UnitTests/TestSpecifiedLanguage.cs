@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
-using Orders.Api.Commands;
-using Orders.Api.Events;
+using Orders.Application.Commands;
+using Orders.Application.Events;
 using Orders.Domain.Model;
 
 namespace Orders.UnitTests;

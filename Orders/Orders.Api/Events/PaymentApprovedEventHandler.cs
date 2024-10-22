@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Orders.Api.Messaging;
+using Orders.Application.Events;
+using Orders.Application.Messaging;
 using Orders.Domain.Model;
 using Orders.Infrastructure;
 
@@ -9,8 +10,7 @@ public static class PaymentApprovedEventHandler
 {
     public static void Listen(IServiceProvider services)
     {
-        var observable =
-            services.GetRequiredService<IAsyncObservable<PaymentApproved>>();
+        var observable = services.GetRequiredService<IAsyncObservable<PaymentApproved>>();
         
         observable.Subscribe(async listenedEvent =>
         {

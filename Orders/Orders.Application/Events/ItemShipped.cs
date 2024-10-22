@@ -1,4 +1,4 @@
-namespace Orders.Api.Events;
+namespace Orders.Application.Events;
 
 public sealed record ItemShipped(
     Guid OrderID,

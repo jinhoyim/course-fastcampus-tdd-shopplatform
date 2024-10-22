@@ -1,11 +1,12 @@
 using System.Reactive.Disposables;
 using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
-using Orders.Api.Events;
+using Orders.Application.Events;
+using Orders.Application.Messaging;
 
-namespace Orders.Api.Messaging;
+namespace Orders.Infrastructure.Messaging;
 
-internal class StorageQueueBus :
+public class StorageQueueBus :
     IBus<PaymentApproved>,
     IAsyncObservable<PaymentApproved>
 {

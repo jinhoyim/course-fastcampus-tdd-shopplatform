@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Api.Events;
+using Orders.Application.Events;
 using Orders.Domain.Model;
 
 namespace Orders.UnitTests.api.orders.handle.item_shipped;

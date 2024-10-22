@@ -1,10 +1,10 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Orders.Api.Commands;
 using Orders.Api.Events;
-using Orders.Api.Messaging;
-using Orders.Domain;
+using Orders.Application.Commands;
+using Orders.Application.Events;
+using Orders.Application.Messaging;
 using Orders.Domain.Exception;
 using Orders.Domain.Model;
 

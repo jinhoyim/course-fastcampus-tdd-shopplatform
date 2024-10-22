@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Api.Commands;
+using Orders.Application.Commands;
 using Orders.Domain.Model;
 
 namespace Orders.UnitTests.api.orders;
