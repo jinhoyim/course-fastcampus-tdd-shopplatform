@@ -47,7 +47,7 @@ public static class OrdersRoute
     )
     {
         var orders = await orderService.GetOrders(userId, shopId);
-        return TypedResults.Ok(orders.AsEnumerable());
+        return TypedResults.Ok(orders);
     }
     
     private static async Task<Results<Ok<Order>, NotFound>> FindOrder(

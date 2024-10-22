@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Orders.Domain;
 using Orders.Domain.Model;
 
 namespace Orders.Infrastructure;
 
-public class OrdersDbContext : DbContext
+public class OrdersDbContext : DbContext, IUnitOfWork
 {
     public OrdersDbContext(DbContextOptions<OrdersDbContext> options)
         : base(options)

@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Orders.Api.Events;
 using Orders.Application.Events;
 using Orders.Application.Messaging;
+using Orders.Domain;
 using Orders.Infrastructure;
 using Orders.Infrastructure.Messaging;
 
@@ -42,6 +43,7 @@ public class Program
             options.SubstituteApiVersionInUrl = true;
         });
 
+        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
         builder.Services.AddScoped<OrderService>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

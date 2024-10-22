@@ -1,20 +1,23 @@
-using Microsoft.EntityFrameworkCore;
+using Orders.Domain;
 using Orders.Domain.Exception;
 using Orders.Domain.Model;
-using Orders.Infrastructure;
+using Orders.Domain.Model.Specifications;
 
 namespace Orders.Api;
 
-public class OrderService(OrdersDbContext dbContext)
+public class OrderService(IOrderRepository repository)
 {
-    public OrdersDbContext DbContext { get; init; } = dbContext;
+    private readonly IOrderRepository _repository = repository;
 
-    public async Task<List<Order>> GetOrders(Guid? userId, Guid? shopId)
+    public async Task<IEnumerable<Order>> GetOrders(Guid? userId, Guid? shopId)
     {
-        return await DbContext.Orders.AsNoTracking()
-            .FilterByUser(userId)
-            .FilterByShop(shopId)
-            .ToListAsync();
+        List<ISpecification<Order>> specifications =
+        [
+            FilterByUserSpecification.Create(userId),
+            FilterByShopSpecification.Create(shopId),
+        ];
+        
+        return await _repository.GetAllOrders(specifications, trackChanges: false);
     }
 
     public async Task<Order> PlaceOrder(Guid userId, Guid shopId, Guid itemId, decimal price)
@@ -24,14 +27,14 @@ public class OrderService(OrdersDbContext dbContext)
             throw new InvalidOrderException("Price must be greater than zero.");
         }
         var order = Order.Create(userId, shopId, itemId, price);
-        await DbContext.Orders.AddAsync(order);
-        await DbContext.SaveChangesAsync();
+        await _repository.Add(order);
+        await _repository.UnitOfWork.SaveChangesAsync();
         return order;
     }
 
     public async Task<Order> GetOrderById(Guid orderId)
     {
-        var order = await DbContext.Orders.AsNoTracking().FirstOrDefaultAsync(x => x.Id == orderId);
+        var order = await _repository.FindOrderById(orderId, trackChanges: false);
         if (order == null)
         {
             throw new OrderNotFoundException($"Order with id {orderId} not found");
@@ -41,7 +44,7 @@ public class OrderService(OrdersDbContext dbContext)
 
     private async Task<Order> FindOrderById(Guid orderId)
     {
-        var order = await DbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+        var order = await _repository.FindOrderById(orderId, trackChanges: true);
         if (order == null)
         {
             throw new OrderNotFoundException($"Order with id {orderId} not found");
@@ -53,7 +56,7 @@ public class OrderService(OrdersDbContext dbContext)
     {
         var order = await FindOrderById(orderId);
         order.StartOrder(paymentTransactionId);
-        await DbContext.SaveChangesAsync();
+        await _repository.UnitOfWork.SaveChangesAsync();
         return order;
     }
 
@@ -61,7 +64,7 @@ public class OrderService(OrdersDbContext dbContext)
     {
         var order = await FindOrderById(orderId);
         order.PaymentCompleted(eventTimeUtc);
-        await DbContext.SaveChangesAsync();
+        await _repository.UnitOfWork.SaveChangesAsync();
         return order;
     }
 
@@ -69,7 +72,7 @@ public class OrderService(OrdersDbContext dbContext)
     {
         var order = await FindOrderById(orderId);
         order.ItemShipped(eventTimeUtc);
-        await DbContext.SaveChangesAsync();
+        await _repository.UnitOfWork.SaveChangesAsync();
         return order;
     }
 }
