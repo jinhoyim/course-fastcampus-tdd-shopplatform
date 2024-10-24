@@ -6,3 +6,4 @@
  */
 
 rootProject.name = 'ShopPlatform'
+include("accounting:api")
