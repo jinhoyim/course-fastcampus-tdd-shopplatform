@@ -6,4 +6,5 @@
  */
 
 rootProject.name = 'ShopPlatform'
-include("accounting:api")
+include 'accounting:api'
+include 'accounting:unittest'
