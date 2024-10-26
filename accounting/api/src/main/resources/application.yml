@@ -1,2 +1,17 @@
 server:
   port: 8091
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/OrderingDB
+    username: shopuser
+    password: mysecret-password#
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: shopplatform.accounting.QuotedNamingStrategy
+      ddl-auto: none
+
+sellers:
+  host: http://localhost:5187
