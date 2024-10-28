@@ -13,7 +13,7 @@ import shopplatform.accounting.controller.query.GetOrdersPlacedIn;
 
 import java.time.LocalDateTime;
 
-@RestController("/get-orders-placed-in")
+@RestController()
 @RequestMapping("/api/orders")
 public class OrdersController {
 
@@ -25,7 +25,7 @@ public class OrdersController {
         this.aggregator = aggreator;
     }
 
-    @PostMapping
+    @PostMapping("/get-orders-placed-in")
     @ApiResponse(content = {
             @Content(
                     mediaType = "application/json",
