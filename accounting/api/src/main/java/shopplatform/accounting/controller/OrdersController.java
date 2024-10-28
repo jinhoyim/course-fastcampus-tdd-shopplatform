@@ -37,8 +37,12 @@ public class OrdersController {
         LocalDateTime endExclusive = startInclusive.plusMonths(1);
         Iterable<Order> orders = reader.getOrdersPlacedIn(
                 query.shopId(),
-                startInclusive,
-                endExclusive);
+                convertKstToUtc(startInclusive),
+                convertKstToUtc(endExclusive));
         return aggregator.aggregateViews(orders);
+    }
+
+    private static LocalDateTime convertKstToUtc(LocalDateTime startInclusive) {
+        return startInclusive.minusHours(9);
     }
 }
