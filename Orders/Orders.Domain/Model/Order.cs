@@ -36,11 +36,11 @@ public class Order
     [JsonInclude]
     public DateTime? ShippedAtUtc { get; private set; }
 
-    public static Order Create(Guid userId, Guid shopId, Guid itemId, decimal price)
+    public static Order Create(Guid orderId, Guid userId, Guid shopId, Guid itemId, decimal price)
     {
         return new Order()
         {
-            Id = Guid.NewGuid(),
+            Id = orderId,
             UserId = userId,
             ShopId = shopId,
             ItemId = itemId,

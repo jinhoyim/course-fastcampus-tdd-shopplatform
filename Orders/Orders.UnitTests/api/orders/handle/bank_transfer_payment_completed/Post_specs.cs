@@ -9,7 +9,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_is_pending()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         
         var response = await server.HandleBankTransferPaymentCompleted(orderId);
 
@@ -20,7 +21,8 @@ public class Post_specs
     public async Task Sut_fails_if_payment_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         
@@ -33,7 +35,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         await server.HandleItemShipped(orderId);

@@ -25,7 +25,7 @@ public class Get_specs
         ];
 
         await Task.WhenAll(from command in commands
-            let uri = "api/v1/orders/place-order"
+            let uri = $"api/v1/orders/{Guid.NewGuid()}/place-order"
             select client.PostAsJsonAsync(uri, command));
 
         Guid userId = commands[0].UserId;
@@ -57,7 +57,7 @@ public class Get_specs
         ];
 
         await Task.WhenAll(from command in commands
-            let uri = "api/v1/orders/place-order"
+            let uri = $"api/v1/orders/{Guid.NewGuid()}/place-order"
             select client.PostAsJsonAsync(uri, command));
 
         Guid shopId = commands[0].ShopId;
@@ -87,7 +87,7 @@ public class Get_specs
         ];
 
         await Task.WhenAll(from command in commands
-            let uri = "api/v1/orders/place-order"
+            let uri = $"api/v1/orders/{Guid.NewGuid()}/place-order"
             select client.PostAsJsonAsync(uri, command));
         
         // Act

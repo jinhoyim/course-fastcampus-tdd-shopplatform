@@ -14,7 +14,8 @@ public class Post_specs
         // Arrange
         OrdersServer server = OrdersServer.Create();
         using var client = server.CreateClient();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         
@@ -33,7 +34,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_not_started()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
 
         HttpResponseMessage response = await server.HandleItemShipped(orderId);
         
@@ -44,7 +46,8 @@ public class Post_specs
     public async Task Sut_fails_if_payment_not_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
 
         HttpResponseMessage response = await server.HandleItemShipped(orderId);
@@ -56,7 +59,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_already_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         await server.HandleItemShipped(orderId);

@@ -32,7 +32,8 @@ public class Post_specs
         // Arrange
         OrdersServer server = OrdersServer.Create();
         
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         string paymentTransactionId = Guid.NewGuid().ToString();
         await server.StartOrder(orderId, paymentTransactionId);
         
@@ -58,7 +59,8 @@ public class Post_specs
         // Arrange
         OrdersServer server = OrdersServer.Create();
         
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         string paymentTransactionId = Guid.NewGuid().ToString();
         await server.StartOrder(orderId, paymentTransactionId);
         

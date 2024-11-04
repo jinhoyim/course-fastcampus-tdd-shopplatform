@@ -25,7 +25,7 @@ public static class OrdersRoute
 
         orderRouteBuilder.MapGet("/", GetOrders).WithName("GetOrders");
         orderRouteBuilder.MapGet("{orderId:Guid}", FindOrder).WithName("FindOrder");
-        orderRouteBuilder.MapPost("/place-order", PlaceOrder).WithName("PlaceOrder");
+        orderRouteBuilder.MapPost("{orderId:Guid}/place-order", PlaceOrder).WithName("PlaceOrder");
         orderRouteBuilder.MapPost("{orderId:Guid}/start-order", StartOrder).WithName("StartOrder");
         orderRouteBuilder.MapPost("handle/bank-transfer-payment-completed", HandleBankTransferPaymentCompleted)
             .WithName("HandleBankTransferPaymentCompleted");
@@ -66,6 +66,7 @@ public static class OrdersRoute
     }
     
     private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrder(
+        Guid orderId,
         [FromBody] PlaceOrder command,
         [FromServices] SellersService sellers,
         OrderService orderService)
@@ -79,7 +80,7 @@ public static class OrdersRoute
 
         try
         {
-            var order = await orderService.PlaceOrder(command.UserId, command.ShopId, command.ItemId, command.Price);
+            var order = await orderService.PlaceOrder(orderId, command.UserId, command.ShopId, command.ItemId, command.Price);
             return TypedResults.Created($"orders/{order.Id}", order);
         }
         catch (InvalidOrderException ex)

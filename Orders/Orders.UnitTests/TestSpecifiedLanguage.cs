@@ -7,9 +7,9 @@ namespace Orders.UnitTests;
 
 public static class TestSpecifiedLanguage
 {
-    public static async Task<Guid> PlaceOrder(this OrdersServer server)
+    public static async Task<HttpResponseMessage> PlaceOrder(this OrdersServer server, Guid orderId)
     {
-        string uri = "/api/v1/orders/place-order";
+        string uri = $"/api/v1/orders/{orderId}/place-order";
         
         PlaceOrder body = new(
             UserId: Guid.NewGuid(),
@@ -17,8 +17,7 @@ public static class TestSpecifiedLanguage
             ItemId: Guid.NewGuid(),
             Price: 10000);
         
-        var response = await server.CreateClient().PostAsJsonAsync(uri, body);
-        return (await response.Content.ReadFromJsonAsync<Order>())!.Id;
+        return await server.CreateClient().PostAsJsonAsync(uri, body);
     }
 
     public static async Task<HttpResponseMessage> StartOrder(

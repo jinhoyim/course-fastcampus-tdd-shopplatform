@@ -20,13 +20,13 @@ public class OrderService(IOrderRepository repository)
         return await _repository.GetAllOrders(specifications, trackChanges: false);
     }
 
-    public async Task<Order> PlaceOrder(Guid userId, Guid shopId, Guid itemId, decimal price)
+    public async Task<Order> PlaceOrder(Guid orderId, Guid userId, Guid shopId, Guid itemId, decimal price)
     {
         if (price <= 0)
         {
             throw new InvalidOrderException("Price must be greater than zero.");
         }
-        var order = Order.Create(userId, shopId, itemId, price);
+        var order = Order.Create(orderId, userId, shopId, itemId, price);
         await _repository.Add(order);
         await _repository.UnitOfWork.SaveChangesAsync();
         return order;

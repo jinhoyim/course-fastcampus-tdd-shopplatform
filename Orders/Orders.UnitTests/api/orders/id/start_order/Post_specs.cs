@@ -11,7 +11,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_already_started()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         
         HttpResponseMessage response = await server.StartOrder(orderId);
@@ -23,7 +24,8 @@ public class Post_specs
     public async Task Sut_fails_if_payment_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         
@@ -36,7 +38,8 @@ public class Post_specs
     public async Task Sut_fails_if_order_completed()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         await server.StartOrder(orderId);
         await server.HandleBankTransferPaymentCompleted(orderId);
         await server.HandleItemShipped(orderId);
@@ -50,7 +53,8 @@ public class Post_specs
     public async Task Sut_correctly_sets_payment_transaction_id()
     {
         OrdersServer server = OrdersServer.Create();
-        Guid orderId = await server.PlaceOrder();
+        Guid orderId = Guid.NewGuid();
+        await server.PlaceOrder(orderId);
         string paymentTransactionId = Guid.NewGuid().ToString();
 
         await server.StartOrder(orderId, paymentTransactionId);
