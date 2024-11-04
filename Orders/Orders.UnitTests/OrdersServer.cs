@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Orders.Api;
 using Orders.Infrastructure;
+using Sellers.UnitTests;
 
 namespace Orders.UnitTests;
 
@@ -46,6 +47,10 @@ public class OrdersServer : TestServer
             builder.ConfigureServices(services =>
             {
                 services.AddSingleton<IServer, OrdersServer>();
+
+                SellersServer sellers = SellersServer.Create();
+                services.AddSingleton(sellers);
+                services.AddSingleton(new SellersService(sellers.CreateClient()));
             });
 
             builder.ConfigureAppConfiguration(config =>
