@@ -25,7 +25,7 @@ public static class OrdersRoute
 
         orderRouteBuilder.MapGet("/", GetOrders).WithName("GetOrders");
         orderRouteBuilder.MapGet("{orderId:Guid}", FindOrder).WithName("FindOrder");
-        orderRouteBuilder.MapPost("/", PlaceOrder).WithName("PlaceOrder");
+        orderRouteBuilder.MapPost("/place-order", PlaceOrder).WithName("PlaceOrder");
         orderRouteBuilder.MapPost("{orderId:Guid}/start-order", StartOrder).WithName("StartOrder");
         orderRouteBuilder.MapPost("handle/bank-transfer-payment-completed", HandleBankTransferPaymentCompleted)
             .WithName("HandleBankTransferPaymentCompleted");

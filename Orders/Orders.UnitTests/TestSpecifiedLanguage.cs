@@ -9,7 +9,7 @@ public static class TestSpecifiedLanguage
 {
     public static async Task<Guid> PlaceOrder(this OrdersServer server)
     {
-        string uri = "/api/v1/orders";
+        string uri = "/api/v1/orders/place-order";
         
         PlaceOrder body = new(
             UserId: Guid.NewGuid(),
