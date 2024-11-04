@@ -67,6 +67,7 @@ public static class OrdersRoute
     
     private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrder(
         [FromBody] PlaceOrder command,
+        [FromServices] SellersService sellers,
         OrderService orderService)
     {
         if (command.UserId == Guid.Empty ||

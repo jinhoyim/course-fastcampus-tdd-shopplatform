@@ -27,6 +27,7 @@ public class Program
         builder.Services.AddSingleton(CreateStorageQueueBus);
         builder.Services.AddSingleton<IBus<PaymentApproved>>(GetStorageQueueBus);
         builder.Services.AddSingleton<IAsyncObservable<PaymentApproved>>(GetStorageQueueBus);
+        builder.Services.AddHttpClient<SellersService>();
             
         builder.Services.AddApiVersioning(options =>
         {
