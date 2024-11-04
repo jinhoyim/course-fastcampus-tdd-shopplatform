@@ -37,7 +37,7 @@ public sealed class ShopsController : ControllerBase
     {
         return await context.Shops.FindShop(id) switch
         {
-            { } shop => Ok(shop),
+            { } shop => Ok(new ShopView(shop.Id, shop.Name)),
             null => NotFound(),
         };
     }
