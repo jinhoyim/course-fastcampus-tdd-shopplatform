@@ -1,19 +1,36 @@
 using System.Net.Http.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Commands;
 using Orders.Application.Events;
 using Orders.Domain.Model;
+using Sellers.Api;
+using Sellers.UnitTests;
 
 namespace Orders.UnitTests;
 
 public static class TestSpecifiedLanguage
 {
-    public static async Task<HttpResponseMessage> PlaceOrder(this OrdersServer server, Guid orderId)
+    public static SellersServer GetSellersServer(this OrdersServer server)
+    {
+        return server.Services.GetRequiredService<SellersServer>();
+    }
+    
+    public static async Task<HttpResponseMessage> PlaceOrder(
+        this OrdersServer server,
+        Guid orderId,
+        Guid? shopId = null)
     {
         string uri = $"/api/v1/orders/{orderId}/place-order";
+
+        if (shopId == null)
+        {
+            Shop shop = await server.GetSellersServer().CreateShop();
+            shopId = shop.Id;
+        }
         
         PlaceOrder body = new(
             UserId: Guid.NewGuid(),
-            ShopId: Guid.NewGuid(),
+            ShopId: shopId.Value,
             ItemId: Guid.NewGuid(),
             Price: 10000);
         

@@ -19,7 +19,7 @@ public static class OrdersRoute
             .HasApiVersion(new ApiVersion(2))
             .ReportApiVersions()
             .Build();
-        
+
         var orderRouteBuilder = app.MapGroup("api/v{version:apiVersion}/orders")
             .WithApiVersionSet(orderApiVersionSet);
 
@@ -31,7 +31,7 @@ public static class OrdersRoute
             .WithName("HandleBankTransferPaymentCompleted");
         orderRouteBuilder.MapPost("accept/payment-approved", AcceptPaymentApproved).WithName("AcceptPaymentApproved");
         orderRouteBuilder.MapPost("handle/item-shipped", HandleItemShipped).WithName("HandleItemShipped");
-        
+
         orderRouteBuilder
             .WithName("Orders API")
             .AllowAnonymous()
@@ -39,7 +39,7 @@ public static class OrdersRoute
 
         return orderRouteBuilder;
     }
-    
+
     private static async Task<Ok<IEnumerable<Order>>> GetOrders(
         [FromQuery(Name = "user-id")] Guid? userId,
         [FromQuery(Name = "shop-id")] Guid? shopId,
@@ -49,7 +49,7 @@ public static class OrdersRoute
         var orders = await orderService.GetOrders(userId, shopId);
         return TypedResults.Ok(orders);
     }
-    
+
     private static async Task<Results<Ok<Order>, NotFound>> FindOrder(
         Guid orderId,
         OrderService orderService)
@@ -64,7 +64,7 @@ public static class OrdersRoute
             return TypedResults.NotFound();
         }
     }
-    
+
     private static async Task<Results<Created<Order>, BadRequest<string>>> PlaceOrder(
         Guid orderId,
         [FromBody] PlaceOrder command,
@@ -80,15 +80,27 @@ public static class OrdersRoute
 
         try
         {
-            var order = await orderService.PlaceOrder(orderId, command.UserId, command.ShopId, command.ItemId, command.Price);
-            return TypedResults.Created($"orders/{order.Id}", order);
+            if (await sellers.ShopExists(command.ShopId))
+            {
+                var order = await orderService.PlaceOrder(
+                    orderId,
+                    userId: command.UserId,
+                    shopId: command.ShopId,
+                    itemId: command.ItemId,
+                    price: command.Price);
+                return TypedResults.Created($"orders/{order.Id}", order);
+            }
+            else
+            {
+                return TypedResults.BadRequest("Shop not found");
+            }
         }
         catch (InvalidOrderException ex)
         {
             return TypedResults.BadRequest(ex.Message);
         }
     }
-    
+
     private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> StartOrder(
         Guid orderId,
         [FromBody] StartOrder command,
@@ -108,10 +120,11 @@ public static class OrdersRoute
             return TypedResults.BadRequest(ex.Message);
         }
     }
-    
-    private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> HandleBankTransferPaymentCompleted(
-        [FromBody] BankTransferPaymentCompleted listenedEvent,
-        OrderService orderService)
+
+    private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>>
+        HandleBankTransferPaymentCompleted(
+            [FromBody] BankTransferPaymentCompleted listenedEvent,
+            OrderService orderService)
     {
         try
         {
@@ -135,11 +148,11 @@ public static class OrdersRoute
         PaymentApproved message = new PaymentApproved(
             listenedEvent.tid,
             listenedEvent.approved_at);
-        
+
         await bus.Send(message);
         return TypedResults.Accepted("");
     }
-    
+
     private static async Task<Results<Ok<Order>, NotFound<string>, BadRequest<string>>> HandleItemShipped(
         [FromBody] ItemShipped listenedEvent,
         OrderService orderService)

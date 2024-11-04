@@ -1,7 +1,10 @@
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Commands;
 using Orders.Domain.Model;
+using Sellers.Api;
+using Sellers.UnitTests;
 
 namespace Orders.UnitTests.api.orders;
 
@@ -11,9 +14,11 @@ public class Get_specs
     public async Task Sut_correctly_applies_user_filter()
     {
         // Arrange
-        using var client = OrdersServer.Create().CreateClient();
-
-        Guid shopId = Guid.NewGuid();
+        OrdersServer server = OrdersServer.Create();
+        using var client = server.CreateClient();
+        Shop shop = await server.GetSellersServer().CreateShop();
+        
+        Guid shopId = shop.Id;
         Guid itemId = Guid.NewGuid();
         decimal price = 100000;
 
@@ -43,17 +48,21 @@ public class Get_specs
     public async Task Sut_correctly_filters_orders_by_shop()
     {
         // Arrange
-        using var client = OrdersServer.Create().CreateClient();
+        OrdersServer server = OrdersServer.Create();
+        using var client = server.CreateClient();
 
         Guid userId = Guid.NewGuid();
         Guid itemId = Guid.NewGuid();
         decimal price = 100000;
 
+        SellersServer sellersServer = server.GetSellersServer();
+        async Task<Guid> GetShopId() => (await sellersServer.CreateShop()).Id;
+
         List<PlaceOrder> commands =
         [
-            new(userId, ShopId: Guid.NewGuid(), itemId, price),
-            new(userId, ShopId: Guid.NewGuid(), itemId, price),
-            new(userId, ShopId: Guid.NewGuid(), itemId, price)
+            new(userId, ShopId: await GetShopId(), itemId, price),
+            new(userId, ShopId: await GetShopId(), itemId, price),
+            new(userId, ShopId: await GetShopId(), itemId, price)
         ];
 
         await Task.WhenAll(from command in commands
@@ -74,14 +83,17 @@ public class Get_specs
     [Fact]
     public async Task Sut_correctly_filters_orders_by_user_and_shop()
     {
-        using var client = OrdersServer.Create().CreateClient();
-        
+        OrdersServer server = OrdersServer.Create();
+        using var client = server.CreateClient();
+        SellersServer sellersServer = server.GetSellersServer();
+        async Task<Guid> GetShopId() => (await sellersServer.CreateShop()).Id;
+
         Guid userId = Guid.NewGuid();
-        Guid shopId = Guid.NewGuid();
+        Guid shopId = await GetShopId();
 
         List<PlaceOrder> commands =
         [
-            new(userId, ShopId: Guid.NewGuid(), ItemId: Guid.NewGuid(), Price: 100),
+            new(userId, ShopId: await GetShopId(), ItemId: Guid.NewGuid(), Price: 100),
             new(userId, shopId, ItemId: Guid.NewGuid(), Price: 100),
             new(UserId: Guid.NewGuid(), shopId, ItemId: Guid.NewGuid(), Price: 100),
         ];
