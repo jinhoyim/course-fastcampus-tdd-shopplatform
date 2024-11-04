@@ -18,6 +18,7 @@ services:
       # - ./data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
   ordering-test-db:
     image: postgres:17.0-bookworm-koKR
     build:
@@ -37,12 +38,34 @@ services:
       # - ./data:/var/lib/postgresql/data
     ports:
       - "15432:5432"
+
+  sellers-db:
+    image: postgres:17.0-bookworm-koKR
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sellers-db
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: shopuser
+      POSTGRES_PASSWORD: ${LOCAL_ORDERDB_PASSWORD}
+      POSTGRES_DB: SellersDB
+      LANG: ko_KR.UTF-8
+    volumes:
+      - sellers-db-data:/var/lib/postgresql/data
+      # - ./data:/var/lib/postgresql/data
+    ports:
+      - "12001:5432"
+
   adminer:
     image: adminer
     container_name: adminer
     restart: always
     ports:
       - "40080:8080"
+
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.32.0-arm64
     container_name: "ordering-azurite"
@@ -56,5 +79,6 @@ services:
       
 volumes:
   ordering-db-data:
+  sellers-db-data:
   ordering-test-db-data:
   ordering-azurite-data:
