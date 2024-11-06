@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Sellers;
 
-namespace Orders.UnitTests.api.orders.place_order;
+namespace Orders.api.orders.place_order;
 
 public class Post_specs
 {

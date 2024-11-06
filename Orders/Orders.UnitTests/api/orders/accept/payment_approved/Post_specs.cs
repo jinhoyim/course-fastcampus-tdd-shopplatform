@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Api.Events;
-using Orders.Domain.Model;
+using Orders.Events;
+using Orders.Model;
 
-namespace Orders.UnitTests.api.orders.accept.payment_approved;
+namespace Orders.api.orders.accept.payment_approved;
 
 public class Post_specs
 {

@@ -1,4 +1,4 @@
-namespace Orders.Application.Events;
+namespace Orders.Events;
 
 public sealed record BankTransferPaymentCompleted(
     Guid OrderId,

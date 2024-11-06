@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Orders.Infrastructure;
 
 #nullable disable
 
-namespace Orders.Infrastructure.Migrations
+namespace Orders.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
     [Migration("20241020161711_AddPaymentTransactionIdToOrder")]

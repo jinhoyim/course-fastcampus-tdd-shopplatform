@@ -1,10 +1,9 @@
 using System.Reactive.Disposables;
 using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
-using Orders.Application.Events;
-using Orders.Application.Messaging;
+using Orders.Events;
 
-namespace Orders.Infrastructure.Messaging;
+namespace Orders.Messaging;
 
 public class StorageQueueBus :
     IBus<PaymentApproved>,

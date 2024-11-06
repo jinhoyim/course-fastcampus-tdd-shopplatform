@@ -1,4 +1,4 @@
-namespace Orders.Application.Commands;
+namespace Orders.Commands;
 
 public sealed record PlaceOrder(
     Guid UserId,

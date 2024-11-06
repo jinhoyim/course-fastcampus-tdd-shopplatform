@@ -2,14 +2,10 @@ using Asp.Versioning;
 using Azure.Storage.Queues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Orders.Api.Events;
-using Orders.Application.Events;
-using Orders.Application.Messaging;
-using Orders.Domain;
-using Orders.Infrastructure;
-using Orders.Infrastructure.Messaging;
+using Orders.Events;
+using Orders.Messaging;
 
-namespace Orders.Api;
+namespace Orders;
 
 public class Program
 {

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Orders.Domain.Exception;
+using Orders.Exception;
 
-namespace Orders.Domain.Model;
+namespace Orders.Model;
 
 public class Order
 {

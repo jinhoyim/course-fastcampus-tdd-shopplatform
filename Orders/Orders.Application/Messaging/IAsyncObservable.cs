@@ -1,4 +1,4 @@
-namespace Orders.Application.Messaging;
+namespace Orders.Messaging;
 
 public interface IAsyncObservable<T>
 {

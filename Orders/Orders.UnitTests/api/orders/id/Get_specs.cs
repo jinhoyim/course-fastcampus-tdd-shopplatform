@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Orders.Domain.Model;
+using Orders.Model;
 using Sellers;
 
-namespace Orders.UnitTests.api.orders.id;
+namespace Orders.api.orders.id;
 
 public class Get_specs
 {

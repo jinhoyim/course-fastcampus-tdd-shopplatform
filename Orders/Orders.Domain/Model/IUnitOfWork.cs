@@ -1,4 +1,4 @@
-namespace Orders.Domain.Model;
+namespace Orders.Model;
 
 public interface IUnitOfWork
 {

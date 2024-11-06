@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Orders.Application.Events;
-using Orders.Application.Messaging;
-using Orders.Domain.Model;
-using Orders.Infrastructure;
+using Orders.Messaging;
+using Orders.Model;
 
-namespace Orders.Api.Events;
+namespace Orders.Events;
 
 public static class PaymentApprovedEventHandler
 {

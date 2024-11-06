@@ -6,12 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Orders.Api;
-using Orders.Infrastructure;
 using Sellers;
-using Program = Orders.Api.Program;
 
-namespace Orders.UnitTests;
+namespace Orders;
 
 public class OrdersServer : TestServer
 {

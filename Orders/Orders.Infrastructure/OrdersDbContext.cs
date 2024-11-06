@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Orders.Domain.Model;
+using Orders.Model;
 
-namespace Orders.Infrastructure;
+namespace Orders;
 
 public class OrdersDbContext : DbContext, IUnitOfWork
 {

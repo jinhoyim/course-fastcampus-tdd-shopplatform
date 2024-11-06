@@ -1,3 +1,3 @@
-namespace Orders.Domain.Exception;
+namespace Orders.Exception;
 
 public class OrderProcessException(string message) : System.Exception(message);

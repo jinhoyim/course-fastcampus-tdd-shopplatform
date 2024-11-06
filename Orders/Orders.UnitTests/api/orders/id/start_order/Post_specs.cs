@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Domain.Model;
+using Orders.Model;
 
-namespace Orders.UnitTests.api.orders.id.start_order;
+namespace Orders.api.orders.id.start_order;
 
 public class Post_specs
 {

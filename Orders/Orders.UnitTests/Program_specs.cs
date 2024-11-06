@@ -1,8 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Api;
 
-namespace Orders.UnitTests;
+namespace Orders;
 
 public class Program_specs
 {

@@ -1,7 +1,7 @@
-using Orders.Domain.Model;
-using Orders.Domain.Model.Specifications;
+using Orders.Model;
+using Orders.Model.Specifications;
 
-namespace Orders.Domain;
+namespace Orders;
 
 public interface IOrderRepository
 {

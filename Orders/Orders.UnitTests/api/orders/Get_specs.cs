@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Application.Commands;
-using Orders.Domain.Model;
+using Orders.Commands;
+using Orders.Model;
 using Sellers;
 
-namespace Orders.UnitTests.api.orders;
+namespace Orders.api.orders;
 
 public class Get_specs
 {

@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Orders.Api.Events;
+namespace Orders.Events;
 
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
 // ReSharper disable InconsistentNaming

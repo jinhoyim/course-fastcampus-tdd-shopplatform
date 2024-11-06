@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Orders.Infrastructure.Migrations
+namespace Orders.Migrations
 {
     /// <inheritdoc />
     public partial class ChangeOrderStatusColumnType : Migration

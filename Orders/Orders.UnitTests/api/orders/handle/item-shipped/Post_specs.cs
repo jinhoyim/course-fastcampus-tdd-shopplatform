@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Orders.Application.Events;
-using Orders.Domain.Model;
+using Orders.Events;
+using Orders.Model;
 
-namespace Orders.UnitTests.api.orders.handle.item_shipped;
+namespace Orders.api.orders.handle.item_shipped;
 
 public class Post_specs
 {

@@ -1,9 +1,8 @@
-using Orders.Domain;
-using Orders.Domain.Exception;
-using Orders.Domain.Model;
-using Orders.Domain.Model.Specifications;
+using Orders.Exception;
+using Orders.Model;
+using Orders.Model.Specifications;
 
-namespace Orders.Api;
+namespace Orders;
 
 public class OrderService(IOrderRepository repository)
 {

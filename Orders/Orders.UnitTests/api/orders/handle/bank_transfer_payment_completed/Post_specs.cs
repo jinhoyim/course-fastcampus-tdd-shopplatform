@@ -1,7 +1,7 @@
 using System.Net;
 using FluentAssertions;
 
-namespace Orders.UnitTests.api.orders.handle.bank_transfer_payment_completed;
+namespace Orders.api.orders.handle.bank_transfer_payment_completed;
 
 public class Post_specs
 {

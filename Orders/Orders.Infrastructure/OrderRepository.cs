@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Orders.Domain;
-using Orders.Domain.Model;
-using Orders.Domain.Model.Specifications;
+using Orders.Model;
+using Orders.Model.Specifications;
 
-namespace Orders.Infrastructure;
+namespace Orders;
 
 public class OrderRepository : IOrderRepository
 {

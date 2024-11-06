@@ -1,11 +1,11 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Application.Commands;
-using Orders.Application.Events;
-using Orders.Domain.Model;
+using Orders.Commands;
+using Orders.Events;
+using Orders.Model;
 using Sellers;
 
-namespace Orders.UnitTests;
+namespace Orders;
 
 public static class TestSpecifiedLanguage
 {

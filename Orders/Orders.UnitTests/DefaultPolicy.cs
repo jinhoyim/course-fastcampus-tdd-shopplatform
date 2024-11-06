@@ -1,11 +1,11 @@
 using Polly;
 
-namespace Orders.UnitTests;
+namespace Orders;
 
 public static class DefaultPolicy
 {
     private static readonly Random s_random = new();
-    public static IAsyncPolicy Instance { get; } = Policy.Handle<Exception>().WaitAndRetryAsync(5, CalculateDelay);
+    public static IAsyncPolicy Instance { get; } = Policy.Handle<System.Exception>().WaitAndRetryAsync(5, CalculateDelay);
 
     private static TimeSpan CalculateDelay(int retries)
     {

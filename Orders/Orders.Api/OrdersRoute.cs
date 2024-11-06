@@ -1,15 +1,14 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Orders.Api.Events;
-using Orders.Application.Commands;
-using Orders.Application.Events;
-using Orders.Application.Messaging;
-using Orders.Domain.Exception;
-using Orders.Domain.Model;
+using Orders.Commands;
+using Orders.Events;
+using Orders.Messaging;
+using Orders.Exception;
+using Orders.Model;
 using Sellers;
 
-namespace Orders.Api;
+namespace Orders;
 
 public static class OrdersRoute
 {
