@@ -52,11 +52,14 @@ public static class OrdersRoute
 
     private static async Task<Results<Ok<Order>, NotFound>> FindOrder(
         Guid orderId,
+        SellersService sellers,
         OrderService orderService)
     {
         try
         {
-            var order = await orderService.GetOrderById(orderId);
+            Order order = await orderService.GetOrderById(orderId);
+            ShopView shop = await sellers.GetShop(order.ShopId);
+            order.ShopName = shop.Name;
             return TypedResults.Ok(order);
         }
         catch (OrderNotFoundException ex)

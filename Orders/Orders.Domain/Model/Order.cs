@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Orders.Domain.Exception;
 
 namespace Orders.Domain.Model;
@@ -13,6 +14,9 @@ public class Order
     public Guid UserId { get; init; }
     
     public Guid ShopId { get; init; }
+    
+    [NotMapped]
+    public string ShopName { get; set; }
     
     public Guid ItemId { get; init; }
     
