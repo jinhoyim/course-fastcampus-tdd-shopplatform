@@ -4,7 +4,7 @@ using Orders.Exception;
 
 namespace Orders.Model;
 
-public class Order
+public sealed class Order
 {
     public Guid Id { get; init; }
     

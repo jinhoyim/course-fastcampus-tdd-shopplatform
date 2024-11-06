@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Sellers;
 
-public class SellersServer : TestServer
+public sealed class SellersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
     private const string ConnectionString =

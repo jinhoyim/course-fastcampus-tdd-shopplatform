@@ -4,7 +4,7 @@ using Orders.Model.Specifications;
 
 namespace Orders;
 
-public class OrderService(IOrderRepository repository)
+public sealed class OrderService(IOrderRepository repository)
 {
     private readonly IOrderRepository _repository = repository;
 

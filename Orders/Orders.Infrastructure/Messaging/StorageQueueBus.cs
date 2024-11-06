@@ -5,7 +5,7 @@ using Orders.Events;
 
 namespace Orders.Messaging;
 
-public class StorageQueueBus :
+public sealed class StorageQueueBus :
     IBus<PaymentApproved>,
     IAsyncObservable<PaymentApproved>
 {

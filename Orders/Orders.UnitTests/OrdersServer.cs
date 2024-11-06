@@ -10,7 +10,7 @@ using Sellers;
 
 namespace Orders;
 
-public class OrdersServer : TestServer
+public sealed class OrdersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
     public const string ConnectionString = "Host=localhost;port=5432;Database=OrderingDB_Testing;Username=testuser;Password=mysecret-pp#";

@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Orders.Model.Specifications;
 
-public class FilterByUserSpecification : ISpecification<Order>
+public sealed class FilterByUserSpecification : ISpecification<Order>
 {
     private readonly Guid? _userId;
 

@@ -3,7 +3,7 @@ using Orders.Model;
 
 namespace Orders;
 
-public class OrdersDbContext : DbContext, IUnitOfWork
+public sealed class OrdersDbContext : DbContext, IUnitOfWork
 {
     public OrdersDbContext(DbContextOptions<OrdersDbContext> options)
         : base(options)

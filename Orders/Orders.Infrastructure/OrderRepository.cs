@@ -4,7 +4,7 @@ using Orders.Model.Specifications;
 
 namespace Orders;
 
-public class OrderRepository : IOrderRepository
+public sealed class OrderRepository : IOrderRepository
 {
     private readonly OrdersDbContext _dbContext;
 
