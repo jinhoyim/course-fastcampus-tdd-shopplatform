@@ -1,3 +1,5 @@
+using Sellers;
+
 namespace Orders.Api;
 
 public sealed class SellersService

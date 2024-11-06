@@ -7,6 +7,7 @@ using Orders.Application.Events;
 using Orders.Application.Messaging;
 using Orders.Domain.Exception;
 using Orders.Domain.Model;
+using Sellers;
 
 namespace Orders.Api;
 
