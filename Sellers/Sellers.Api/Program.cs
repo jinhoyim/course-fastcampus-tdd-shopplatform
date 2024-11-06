@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Sellers.Api;
+namespace Sellers;
 
 public class Program
 {

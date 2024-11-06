@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Sellers.Api.Controllers;
+namespace Sellers.Controllers;
 
 [ApiController]
 [Route("api/shops")]

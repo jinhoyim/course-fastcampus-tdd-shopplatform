@@ -4,7 +4,6 @@ using Orders.Application.Commands;
 using Orders.Application.Events;
 using Orders.Domain.Model;
 using Sellers;
-using Sellers.UnitTests;
 
 namespace Orders.UnitTests;
 

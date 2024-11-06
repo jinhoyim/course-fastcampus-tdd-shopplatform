@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using FluentAssertions;
 
-namespace Sellers.UnitTests.api.shops.id;
+namespace Sellers.api.shops.id;
 
 public class Get_specs
 {

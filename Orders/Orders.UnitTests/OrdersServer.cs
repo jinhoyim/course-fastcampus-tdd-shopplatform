@@ -8,7 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Orders.Api;
 using Orders.Infrastructure;
-using Sellers.UnitTests;
+using Sellers;
+using Program = Orders.Api.Program;
 
 namespace Orders.UnitTests;
 

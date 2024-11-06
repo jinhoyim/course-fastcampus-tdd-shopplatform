@@ -3,7 +3,6 @@ using FluentAssertions;
 using Orders.Application.Commands;
 using Orders.Domain.Model;
 using Sellers;
-using Sellers.UnitTests;
 
 namespace Orders.UnitTests.api.orders;
 

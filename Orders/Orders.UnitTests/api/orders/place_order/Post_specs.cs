@@ -1,8 +1,7 @@
 using System.Net;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Sellers.Api;
-using Sellers.UnitTests;
+using Sellers;
 
 namespace Orders.UnitTests.api.orders.place_order;
 

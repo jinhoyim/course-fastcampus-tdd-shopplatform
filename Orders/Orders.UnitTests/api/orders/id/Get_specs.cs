@@ -1,7 +1,6 @@
 using FluentAssertions;
 using Orders.Domain.Model;
 using Sellers;
-using Sellers.UnitTests;
 
 namespace Orders.UnitTests.api.orders.id;
 

@@ -1,7 +1,6 @@
 using System.Net.Http.Json;
-using Sellers.Api;
 
-namespace Sellers.UnitTests;
+namespace Sellers;
 
 public static class TestSpecifiedLanguage
 {
