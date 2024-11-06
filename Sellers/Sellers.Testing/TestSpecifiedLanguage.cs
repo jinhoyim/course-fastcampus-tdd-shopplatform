@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using Sellers.Api;
-using Sellers.Api.Controllers;
 
 namespace Sellers.UnitTests;
 

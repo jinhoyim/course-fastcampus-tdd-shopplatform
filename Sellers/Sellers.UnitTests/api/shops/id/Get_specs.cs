@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using FluentAssertions;
-using Sellers.Api;
 
 namespace Sellers.UnitTests.api.shops.id;
 

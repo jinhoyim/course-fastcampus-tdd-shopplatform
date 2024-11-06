@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Sellers.Api;
+namespace Sellers;
 
 public sealed class Shop
 {

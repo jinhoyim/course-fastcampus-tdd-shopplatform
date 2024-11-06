@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Commands;
 using Orders.Application.Events;
 using Orders.Domain.Model;
-using Sellers.Api;
+using Sellers;
 using Sellers.UnitTests;
 
 namespace Orders.UnitTests;

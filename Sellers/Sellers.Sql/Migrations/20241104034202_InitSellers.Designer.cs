@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Sellers.Api;
 
 #nullable disable
 
-namespace Sellers.Api.Migrations
+namespace Sellers.Migrations
 {
     [DbContext(typeof(SellersDbContext))]
     [Migration("20241104034202_InitSellers")]

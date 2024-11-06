@@ -1,9 +1,8 @@
 using System.Net.Http.Json;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Commands;
 using Orders.Domain.Model;
-using Sellers.Api;
+using Sellers;
 using Sellers.UnitTests;
 
 namespace Orders.UnitTests.api.orders;

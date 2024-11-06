@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Sellers.Api;
 
 #nullable disable
 
-namespace Sellers.Api.Migrations
+namespace Sellers.Migrations
 {
     [DbContext(typeof(SellersDbContext))]
     partial class SellersDbContextModelSnapshot : ModelSnapshot

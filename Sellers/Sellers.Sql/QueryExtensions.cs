@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Sellers.Api;
+namespace Sellers;
 
 public static class QueryExtensions
 {
