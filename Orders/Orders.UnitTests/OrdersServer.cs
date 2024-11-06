@@ -15,7 +15,7 @@ namespace Orders.UnitTests;
 public class OrdersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
-    public const string ConnectionString = "Host=localhost;port=15432;Database=OrderingDB_Testing;Username=testuser;Password=mysecret-password#";
+    public const string ConnectionString = "Host=localhost;port=5432;Database=OrderingDB_Testing;Username=testuser;Password=mysecret-pp#";
     
     public OrdersServer(
         IServiceProvider services,

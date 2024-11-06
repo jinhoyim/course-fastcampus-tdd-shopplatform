@@ -14,7 +14,7 @@ public class SellersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
     private const string ConnectionString =
-        "Host=localhost;port=12101;Database=SellersDB_Testing;Username=testuser;Password=mysecret-password#";
+        "Host=localhost;port=5432;Database=SellersDB_Testing;Username=testuser;Password=mysecret-pp#";
 
     private static readonly Dictionary<string,string> TestSettings = new()
     {
