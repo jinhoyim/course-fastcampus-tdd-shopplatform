@@ -12,14 +12,9 @@ namespace Sellers;
 public sealed class SellersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
-    private const string ConnectionString =
+    private const string DefaultConnectionString =
         "Host=localhost;port=5432;Database=SellersDB_Testing;Username=testuser;Password=mysecret-pp#";
 
-    private static readonly Dictionary<string,string> TestSettings = new()
-    {
-        { "ConnectionStrings:SellersDbConnection", ConnectionString }
-    };
-    
     public SellersServer(
         IServiceProvider services,
         IOptions<TestServerOptions> optionsAccessor)
@@ -27,9 +22,9 @@ public sealed class SellersServer : TestServer
     {
     }
 
-    public static SellersServer Create()
+    public static SellersServer Create(string connectionString = DefaultConnectionString)
     {
-        SellersServer server = (SellersServer)new Factory().Server;
+        SellersServer server = (SellersServer)new Factory(connectionString).Server;
         lock (s_dbMigrationLock)
         {
             using IServiceScope scope = server.Services.CreateScope();
@@ -41,6 +36,10 @@ public sealed class SellersServer : TestServer
 
     private sealed class Factory : WebApplicationFactory<Program>
     {
+        private readonly string connectionString;
+
+        public Factory(string connectionString) => this.connectionString = connectionString;
+        
         protected override IHost CreateHost(IHostBuilder builder)
         {
             builder.ConfigureServices(services =>
@@ -50,7 +49,10 @@ public sealed class SellersServer : TestServer
 
             builder.ConfigureAppConfiguration(config =>
             {
-                config.AddInMemoryCollection(TestSettings!);
+                config.AddInMemoryCollection(new Dictionary<string, string>()
+                {
+                    { "ConnectionStrings:SellersDbConnection", connectionString }
+                }!);
             });
             return base.CreateHost(builder);
         }
