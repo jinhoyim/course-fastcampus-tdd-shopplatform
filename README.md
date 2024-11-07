@@ -4,23 +4,11 @@
 
 ## 도커 컴포즈를 이용한 DB 실행
 
-### 환경변수 설정
-
-- LOCAL_DEVDB_SUPER_PASSWORD
-- LOCAL_DEVDB_PASSWORD = "mysecret-pp#" (바로 실행할 수 있도록 기본으로 설정되어 있는 값)
-
 ### docker compose 실행
-
 ```bash
 cd db
-chmod 744 init.sh
 docker compose up -d
 ```
-
-### 기타
-
-- 관리자 계정 : shopadmin
-- 도커 이미지에서 관리자 계정의 이름으로 디비를 생성하며, 이름을 지정하려면 `environment`에 `POSTGRES_DB` 환경변수 값을 추가한다.
 
 ## DB 마이그레이션 실행
 
@@ -42,18 +30,17 @@ dotnet tool install --global dotnet-ef
 
 ```bash
 # OrderingDB Migration
-cd Orders/Orders.Api
-dotnet ef database update -p ../Orders.Infrastructure/Orders.Infrastructure.csproj
+dotnet ef database update -p Orders/Orders.Infrastructure -s Orders/Orders.Api
 
 # SellersDB Migration
-cd Sellers/Sellers.Api
-dotnet ef database update
+dotnet ef database update -p Sellers/Sellers.Sql -s Sellers/Sellers.Api
 ```
 
 ### 테스트 환경 연결 정보 설정
 
-- Orders/Orders.UnitTests/OrdersServer.cs - "string ConnectionString"
-- Sellers/Selleres.Testing/SellersServer.cs - "string ConnectionString"
+- Orders/Orders.UnitTests/OrdersServer.cs
+- Sellers/Sellers.Testing/SellersServer.cs
+- Sellers/Sellers.UnitTests/api/shops/id/Get_specs.cs
 
 ## 개발 서버 실행
 

@@ -8,15 +8,11 @@ services:
     restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_USER: shopadmin
-      POSTGRES_PASSWORD: ${LOCAL_DEVDB_SUPER_PASSWORD}
-      POSTGRES_MULTIPLE_DATABASES: "OrderingDB:shopuser, SellersDB:shopuser, OrderingDB_Testing:testuser, SellersDB_Testing:testuser, SellersDB_Isolated:testuser"
-      POSTGRES_MULTIPLE_INIT_PASSWORD: ${LOCAL_DEVDB_PASSWORD}
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: mysecret-pp#
       LANG: ko_KR.UTF-8
     volumes:
-      - ./init.sh:/init.sh
       - shop-platform-db-data:/var/lib/postgresql/data
-    entrypoint: ["/bin/bash", "-c", "/init.sh & exec docker-entrypoint.sh postgres"]
     ports:
       - "5432:5432"
 
