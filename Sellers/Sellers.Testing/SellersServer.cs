@@ -12,9 +12,7 @@ namespace Sellers;
 public sealed class SellersServer : TestServer
 {
     private static readonly object s_dbMigrationLock = new();
-    private const string DefaultConnectionString =
-        "Host=localhost;port=5432;Database=SellersDB_Testing;Username=testuser;Password=mysecret-pp#";
-
+    
     public SellersServer(
         IServiceProvider services,
         IOptions<TestServerOptions> optionsAccessor)
@@ -22,7 +20,7 @@ public sealed class SellersServer : TestServer
     {
     }
 
-    public static SellersServer Create(string connectionString = DefaultConnectionString)
+    public static SellersServer Create(string connectionString = SellersDatabase.DefaultConnectionString)
     {
         SellersServer server = (SellersServer)new Factory(connectionString).Server;
         lock (s_dbMigrationLock)

@@ -8,5 +8,6 @@ public sealed class AutoSellersDataAttribute()
         new CompositeCustomization(
             new ShopCustomization(),
             new PasswordHasherCustomization(),
+            new SellersDbContextCustomization(),
             new SellersServerCustomization()
         )));
