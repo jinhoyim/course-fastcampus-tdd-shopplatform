@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Sellers.Contracts\Sellers.Contracts.csproj" />
+      <ProjectReference Include="..\Sellers.Crypto\Sellers.Crypto.csproj" />
       <ProjectReference Include="..\Sellers.DomainModel\Sellers.DomainModel.csproj" />
       <ProjectReference Include="..\Sellers.Sql\Sellers.Sql.csproj" />
     </ItemGroup>

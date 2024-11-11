@@ -12,6 +12,17 @@ public static class TestSpecifiedLanguage
         HttpResponseMessage response = await client.PostAsJsonAsync(uri, body);
         return (await response.Content.ReadFromJsonAsync<Shop>())!;
     }
+
+    public static async Task<ShopView> CreateShop(
+        this SellersServer server,
+        string name)
+    {
+        using HttpClient client = server.CreateClient();
+        string uri = "api/shops";
+        var body = new { name };
+        HttpResponseMessage response = await client.PostAsJsonAsync(uri, body);
+        return (await response.Content.ReadFromJsonAsync<ShopView>())!;
+    }
     
     public static async Task SetShopUser(
         this SellersServer server,

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Sellers.QueryModel;
 
 namespace Sellers;
 
@@ -11,16 +12,22 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddDbContext<SellersDbContext>(options =>
+        IServiceCollection services = builder.Services;
+        services.AddDbContext<SellersDbContext>(ConfigureDbContextOptions);
+        services.AddSingleton<Func<SellersDbContext>>(provider =>
         {
-            options.UseNpgsql(builder.Configuration.GetConnectionString("SellersDbConnection"));
+            return GetDbContextFactory(provider);
         });
-        builder.Services.AddSingleton<IPasswordHasher<object>, PasswordHasher<object>>();
         
-        builder.Services.AddControllers();
+        services.AddSingleton<IPasswordHasher<object>, PasswordHasher<object>>();
+        services.AddSingleton<PasswordVerifier>();
+        services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
+        
+        services.AddSingleton<IUserReader, ShopUserReader>();
+        services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
         var app = builder.Build();
 
@@ -37,5 +44,20 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static void ConfigureDbContextOptions(
+        IServiceProvider provider,
+        DbContextOptionsBuilder options)
+    {
+        IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
+        options.UseNpgsql(configuration.GetConnectionString("SellersDbConnection"));
+    }
+
+    private static Func<SellersDbContext> GetDbContextFactory(IServiceProvider provider)
+    {
+        DbContextOptionsBuilder<SellersDbContext> options = new();
+        ConfigureDbContextOptions(provider, options);
+        return () => new SellersDbContext(options.Options);
     }
 }
