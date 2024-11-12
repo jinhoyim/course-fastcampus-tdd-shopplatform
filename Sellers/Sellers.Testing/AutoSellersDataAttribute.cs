@@ -9,5 +9,6 @@ public sealed class AutoSellersDataAttribute()
             new ShopCustomization(),
             new PasswordHasherCustomization(),
             new SellersDbContextCustomization(),
-            new SellersServerCustomization()
+            new SellersServerCustomization(),
+            new UserCustomization()
         )));
