@@ -3,10 +3,10 @@ using Sellers.QueryModel;
 
 namespace Sellers.Controllers;
 
-[Route("api/users/verify-password")]
+[Route("api/users")]
 public sealed class UsersController : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("verify-password")]
     public async Task<IActionResult> VerifyPassword(
         [FromBody] Credentials credentials,
         [FromServices] PasswordVerifier verifier)
