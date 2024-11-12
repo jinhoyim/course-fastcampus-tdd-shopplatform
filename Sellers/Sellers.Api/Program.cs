@@ -23,7 +23,7 @@ public class Program
         services.AddSingleton<PasswordVerifier>();
         services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
         
-        services.AddSingleton<IUserReader, ShopUserReader>();
+        services.AddSingleton<IUserReader, BackwardCompatibleUserReader>();
         services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
