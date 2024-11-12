@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Sellers.CommandModel;
+using Sellers.Commands;
+using Sellers.Filters;
 using Sellers.QueryModel;
 
 namespace Sellers.Controllers;
@@ -16,5 +19,15 @@ public sealed class UsersController : ControllerBase
             true => Ok(),
             false => BadRequest()
         };
+    }
+
+    [HttpPost("{id}/create-user")]
+    [TypeFilter<InvariantViolationFilter>]
+    public Task CreateUser(
+        Guid id,
+        [FromBody] CreateUser command,
+        [FromServices] CreateUserCommandExecutor executor)
+    {
+        return executor.Execute(id, command);
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Sellers.CommandModel;
 using Sellers.QueryModel;
 
 namespace Sellers;
@@ -24,6 +25,8 @@ public class Program
         services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
         
         services.AddSingleton<IUserReader, BackwardCompatibleUserReader>();
+        services.AddSingleton<IUserRepository, SqlUserRepository>();
+        services.AddSingleton<CreateUserCommandExecutor>();
         services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
