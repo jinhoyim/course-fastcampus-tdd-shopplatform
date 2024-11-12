@@ -6,6 +6,7 @@ public class SellersDbContextCustomization : ICustomization
 {
     public void Customize(IFixture fixture)
     {
-        fixture.Register(() => SellersDatabase.GetContext());
+        Func<SellersDbContext> factory = SellersDatabase.CreateContext;
+        fixture.Register(() => factory);
     }
 }
