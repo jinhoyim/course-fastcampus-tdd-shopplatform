@@ -13,8 +13,9 @@ public sealed class ShopUserReader : IUserReader
     
     public async Task<User?> FindUser(string username)
     {
-        SellersDbContext dbContext = contextFactory();
+        await using SellersDbContext dbContext = contextFactory();
         IQueryable<Shop> query = dbContext.Shops
+            .AsNoTracking()
             .Where(x => x.UserId == username);
         
         return await query.SingleOrDefaultAsync() switch
