@@ -7,4 +7,8 @@
         <RootNamespace>Sellers</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Sellers.Contracts\Sellers.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>
