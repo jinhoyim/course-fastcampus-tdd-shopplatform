@@ -71,4 +71,22 @@ public class ShopUserReader_specs
         User? actual = await sut.FindUser(id);
         actual.Should().BeNull();
     }
+    
+    [Theory, AutoSellersData]
+    public async Task Sut_correctly_sets_administrator_role(
+        Func<SellersDbContext> contextFactory,
+        Shop shop,
+        ShopUserReader sut,
+        string password,
+        IPasswordHasher hasher)
+    {
+        await using SellersDbContext dbContext = contextFactory();
+        dbContext.Shops.Add(shop);
+        await dbContext.SaveChangesAsync();
+
+        User actual = (await sut.FindUser(id: shop.Id))!;
+
+        Role administrator = new Role(shop.Id, RoleName: "Administrator");
+        actual.Roles.Should().Contain(administrator);
+    }
 }

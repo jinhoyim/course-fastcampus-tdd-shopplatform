@@ -30,4 +30,12 @@ public sealed class UsersController : ControllerBase
     {
         return executor.Execute(id, command);
     }
+
+    [HttpGet("{id}/roles")]
+    public async Task<IActionResult> GetRoles(Guid id, [FromServices] IUserReader userReader)
+    {
+        return await userReader.FindUser(id) is { } user
+            ? Ok(user.Roles)
+            : NotFound();
+    }
 }

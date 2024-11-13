@@ -30,8 +30,11 @@ public sealed class ShopUserReader : IUserReader
                 shop.Id,
                 shop.UserId!,
                 shop.PasswordHash!,
-                ImmutableArray<Role>.Empty),
+                Roles: GetUserRoles(shop)),
             null => null,
         };
     }
+
+    private static ImmutableArray<Role> GetUserRoles(Shop shop)
+        => [new Role(shop.Id, RoleName: "Administrator")];
 }
