@@ -51,4 +51,27 @@ public class SqlUserReader_specs
         User? actual = await sut.FindUser(id);
         actual.Should().BeNull();
     }
+
+    [Theory, AutoSellersData]
+    public async Task Sut_correctly_restores_roles(
+        Func<SellersDbContext> contextFactory,
+        SqlUserReader sut,
+        UserEntity user,
+        Role[] roles)
+    {
+        await using SellersDbContext dbContext = contextFactory();
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync();
+        dbContext.Roles.AddRange(roles.Select(x => new RoleEntity
+        {
+            UserSequence = user.Sequence,
+            ShopId = x.ShopId,
+            RoleName = x.RoleName
+        }));
+        await dbContext.SaveChangesAsync();
+
+        User actual = (await sut.FindUser(user.Id))!;
+
+        actual.Roles.Should().BeEquivalentTo(roles);
+    }
 }
