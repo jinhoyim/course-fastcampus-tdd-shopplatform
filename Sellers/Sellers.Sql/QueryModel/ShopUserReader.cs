@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sellers.QueryModel;
@@ -27,6 +28,10 @@ public sealed class ShopUserReader : IUserReader
 
     private static User Translate(Shop shop)
     {
-        return new User(shop.Id, shop.UserId!, shop.PasswordHash!);
+        return new User(
+            shop.Id,
+            shop.UserId!,
+            shop.PasswordHash!,
+            ImmutableArray<Role>.Empty);
     }
 }

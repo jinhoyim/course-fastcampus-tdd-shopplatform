@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sellers.QueryModel;
@@ -22,7 +23,8 @@ public sealed class SqlUserReader : IUserReader
             { } user => new(
                 user.Id,
                 user.Username,
-                user.PasswordHash),
+                user.PasswordHash,
+                ImmutableArray<Role>.Empty),
             null => null
         };
     }

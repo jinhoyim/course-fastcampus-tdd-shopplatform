@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +9,10 @@ public class SqlUserRepository_specs
     [Theory, AutoSellersData]
     public async Task Sut_correctly_adds_entity(
         SqlUserRepository sut,
-        User user,
+        User source,
         Func<SellersDbContext> contextFactory)
     {
+        User user = source with { Roles = ImmutableArray<Role>.Empty };
         await sut.Add(user);
         using SellersDbContext dbContext = contextFactory();
         

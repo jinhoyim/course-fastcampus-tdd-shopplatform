@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Sellers.Commands;
 using Sellers.QueryModel;
 
@@ -27,7 +28,9 @@ public sealed class CreateUserCommandExecutor
 
     private async Task AddUser(Guid id, CreateUser command)
     {
-        User user = new User(id, command.Username, _hasher.HashPassword(command.Password));
+        string passwordHash = _hasher.HashPassword(command.Password);
+        ImmutableArray<Role> roles = ImmutableArray<Role>.Empty;
+        User user = new User(id, command.Username, passwordHash, roles);
         await _repository.Add(user);
     }
 
