@@ -18,13 +18,19 @@ public class BackwardCompatibleUserReader : IUserReader
 
     public async Task<User?> FindUser(string username)
     {
-        foreach (IUserReader reader in _readers)
-        {
-            if (await reader.FindUser(username) is { } user)
-            {
-                return user;
-            }
-        }
-        return default;
+        return await FindUser(async reader => await reader.FindUser(username));
+    }
+
+    public async Task<User?> FindUser(Guid id)
+    {
+        return await FindUser(async reader => await reader.FindUser(id));
+    }
+
+    private async Task<User?> FindUser(Func<IUserReader, ValueTask<User?>> selector)
+    {
+        return await _readers.ToAsyncEnumerable()
+            .SelectAwait(selector)
+            .Where(user => user is not null)
+            .FirstOrDefaultAsync();
     }
 }

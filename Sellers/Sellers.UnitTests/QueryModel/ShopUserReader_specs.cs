@@ -44,4 +44,31 @@ public class ShopUserReader_specs
         User? actual = await sut.FindUser(username);
         actual.Should().BeNull();
     }
+    
+    [Theory, AutoSellersData]
+    public async Task Sut_returns_user_entity_with_matching_id(
+        Func<SellersDbContext> contxtFactory,
+        Shop shop,
+        ShopUserReader sut)
+    {
+        using SellersDbContext dbContext = contxtFactory();
+        dbContext.Shops.Add(shop);
+        await dbContext.SaveChangesAsync();
+
+        User? actual = await sut.FindUser(id: shop.Id);
+
+        actual.Should().NotBeNull();
+        actual!.Id.Should().Be(shop.Id);
+        actual.Username.Should().Be(shop.UserId);
+        actual.PasswordHash.Should().Be(shop.PasswordHash);
+    }
+    
+    [Theory, AutoSellersData]
+    public async Task Sut_returns_null_with_nonexistent_id(
+        ShopUserReader sut,
+        Guid id)
+    {
+        User? actual = await sut.FindUser(id);
+        actual.Should().BeNull();
+    }
 }

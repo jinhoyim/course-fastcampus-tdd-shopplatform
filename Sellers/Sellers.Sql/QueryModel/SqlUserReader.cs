@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sellers.QueryModel;
@@ -12,12 +13,17 @@ public sealed class SqlUserReader : IUserReader
         _contextFactory = contextFactory;
     }
     
-    public async Task<User?> FindUser(string username)
+    public Task<User?> FindUser(string username) => FindUser(x => x.Username == username);
+
+    public Task<User?> FindUser(Guid id) => FindUser(x => x.Id == id);
+
+    private async Task<User?> FindUser(Expression<Func<UserEntity, bool>> predicate)
     {
         await using SellersDbContext dbContext = _contextFactory();
         IQueryable<UserEntity> query = dbContext.Users
             .AsNoTracking()
-            .Where(x => x.Username == username);
+            .Where(predicate);
+        
         return await query.SingleOrDefaultAsync() switch
         {
             { } user => new(
