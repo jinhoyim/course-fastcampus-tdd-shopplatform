@@ -14,4 +14,10 @@ public sealed record User(
         Role newRole = new Role(command.ShopId, command.RoleName);
         return this with { Roles = Roles.Add(newRole) };
     }
+
+    public User RevokeRole(RevokeRole command)
+    {
+        Role role = new Role(command.ShopId, command.RoleName);
+        return this with { Roles = Roles.Remove(role) };
+    }
 }

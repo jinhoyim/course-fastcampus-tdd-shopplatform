@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Sellers.CommandModel;
 using Sellers.Commands;
@@ -45,6 +46,16 @@ public sealed class UsersController : ControllerBase
         Guid id,
         [FromBody] GrantRole command,
         [FromServices] GrantRoleCommandExecutor executor)
+    {
+        return executor.Execute(id, command);
+    }
+
+    [HttpPost("{id}/revoke-role")]
+    [TypeFilter(typeof(EntityNotFoundFilter))]
+    public Task RevokeRole(
+        Guid id,
+        [FromBody] RevokeRole command,
+        [FromServices] RevokeRoleCommandExecutor executor)
     {
         return executor.Execute(id, command);
     }

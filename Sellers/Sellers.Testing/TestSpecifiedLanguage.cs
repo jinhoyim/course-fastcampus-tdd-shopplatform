@@ -80,4 +80,15 @@ public static class TestSpecifiedLanguage
         HttpResponseMessage response = await client.GetAsync(uri);
         return (await response.Content.ReadFromJsonAsync<IEnumerable<Role>>())!;
     }
+    
+    public static async Task<HttpResponseMessage> RevokeRole(
+        this SellersServer server,
+        Guid userId,
+        Guid shopId,
+        string roleName)
+    {
+        string uri = $"api/users/{userId}/revoke-role";
+        RevokeRole body = new RevokeRole(shopId, roleName);
+        return await server.CreateClient().PostAsJsonAsync(uri, body);
+    }
 }
