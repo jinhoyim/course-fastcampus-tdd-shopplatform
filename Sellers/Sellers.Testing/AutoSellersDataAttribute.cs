@@ -11,5 +11,6 @@ public sealed class AutoSellersDataAttribute()
             new RoleCustomization(),
             new PasswordHasherCustomization(),
             new SellersDbContextCustomization(),
+            new UserRepositoryCustomization(),
             new SellersServerCustomization()
         )));

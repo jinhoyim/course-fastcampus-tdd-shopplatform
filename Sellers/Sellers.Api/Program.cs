@@ -27,6 +27,7 @@ public class Program
         services.AddSingleton<IUserReader, BackwardCompatibleUserReader>();
         services.AddSingleton<IUserRepository, SqlUserRepository>();
         services.AddSingleton<CreateUserCommandExecutor>();
+        services.AddSingleton<GrantRoleCommandExecutor>();
         services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();

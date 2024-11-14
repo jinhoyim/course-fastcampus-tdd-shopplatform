@@ -38,4 +38,14 @@ public sealed class UsersController : ControllerBase
             ? Ok(user.Roles)
             : NotFound();
     }
+
+    [HttpPost("{id}/grant-role")]
+    [TypeFilter(typeof(EntityNotFoundFilter))]
+    public Task GrantRole(
+        Guid id,
+        [FromBody] GrantRole command,
+        [FromServices] GrantRoleCommandExecutor executor)
+    {
+        return executor.Execute(id, command);
+    }
 }

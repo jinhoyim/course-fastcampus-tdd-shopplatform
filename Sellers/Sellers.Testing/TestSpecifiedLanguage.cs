@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Sellers.Commands;
 
 namespace Sellers;
 
@@ -44,5 +45,39 @@ public static class TestSpecifiedLanguage
         HttpResponseMessage response = await client.GetAsync(uri);
         HttpContent content = response.EnsureSuccessStatusCode().Content;
         return (await content.ReadFromJsonAsync<ShopView>())!;
+    }
+
+    public static async Task CreateUser(
+        this SellersServer server,
+        Guid id,
+        string username,
+        string password)
+    {
+        HttpClient client = server.CreateClient();
+        CreateUser body = new(username, password);
+        string uri = $"api/users/{id}/create-user";
+        await client.PostAsJsonAsync(uri, body);
+    }
+
+    public static async Task<HttpResponseMessage> GrantRole(
+        this SellersServer server,
+        Guid id,
+        Guid shopId,
+        string roleName)
+    {
+        HttpClient client = server.CreateClient();
+        string uri = $"api/users/{id}/grant-role";
+        GrantRole body = new(shopId, roleName);
+        return await client.PostAsJsonAsync(uri, body);
+    }
+    
+    public static async Task<IEnumerable<Role>> GetRoles(
+        this SellersServer server,
+        Guid id)
+    {
+        HttpClient client = server.CreateClient();
+        string uri = $"api/users/{id}/roles";
+        HttpResponseMessage response = await client.GetAsync(uri);
+        return (await response.Content.ReadFromJsonAsync<IEnumerable<Role>>())!;
     }
 }

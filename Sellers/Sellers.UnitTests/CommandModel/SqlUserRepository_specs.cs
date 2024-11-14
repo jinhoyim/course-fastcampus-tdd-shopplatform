@@ -20,4 +20,24 @@ public class SqlUserRepository_specs
         
         actual.Should().BeEquivalentTo(user, c => c.ExcludingMissingMembers());
     }
+
+    [Theory, AutoSellersData]
+    public async Task Sut_returns_true_if_user_exists(
+        Func<SellersDbContext> contextFactory,
+        SqlUserRepository sut,
+        User user)
+    {
+        await sut.Add(user);
+        bool actual = await sut.TryUpdate(user.Id, x => x);
+        actual.Should().BeTrue();
+    }
+
+    [Theory, AutoSellersData]
+    public async Task Sut_returns_false_if_user_not_exists(
+        SqlUserRepository sut,
+        Guid userId)
+    {
+        bool actual = await sut.TryUpdate(userId, x => x);
+        actual.Should().BeFalse();
+    }
 }
